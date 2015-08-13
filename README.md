@@ -13,7 +13,10 @@ first start the CoreOS VM:
 ```bash
 $ vagrant up
 $ vagrant ssh
+$ cd /home/core/share
 ```
+
+NOTE: the code in this repo lives in `/home/core/share`
 
 ## manual test
 
