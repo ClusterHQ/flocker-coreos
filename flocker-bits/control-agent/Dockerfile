@@ -23,3 +23,9 @@ RUN sudo bash -c "cd util-linux; \
                   ./configure --without-python --disable-all-programs --enable-nsenter; \
                   make"
 RUN sudo cp /util-linux/nsenter /bin
+
+RUN sudo echo "#!/bin/bash" > /bin/nsmount
+RUN sudo echo "/bin/nsenter --mount=/proc/1/ns/mnt -- /bin/linuxmount \"\$@\"" >> /bin/nsmount
+RUN sudo chmod 4755 /bin/nsmount
+RUN sudo mv /bin/mount /bin/linuxmount
+RUN sudo ln -s /bin/nsmount /bin/mount
