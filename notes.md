@@ -85,3 +85,6 @@ fuse already comes with kernel
 
  * https://groups.google.com/forum/#!topic/docker-user/en2Qy1brv0Y
 
+### Madhuri research
+
+ * Docker PR (https://github.com/docker/docker/pull/14097) that enables MS_SHARED rootfs mount option. Sample usage dscribed in https://huaminchen.wordpress.com/2015/07/31/latest-status-on-docker-mount-propagation-development/ 
