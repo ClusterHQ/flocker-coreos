@@ -6,6 +6,18 @@ An experiment in getting Flocker to work on CoreOS.
 
 To create and mount a filesystem from inside a container and to then access a read/write version of the filesystem from another container.
 
+## spin up Vagrant VM
+
+first start the CoreOS VM:
+
+```bash
+$ vagrant up
+$ vagrant ssh
+$ cd /home/core/share
+```
+
+NOTE: the code in this repo lives in `/home/core/share`
+
 ## manual test
 
 ```bash
@@ -74,6 +86,7 @@ $ nsenter --mount=/host/proc/1/ns/mnt -- losetup /dev/loop4 /tmp/my_fs4
 $ nsenter --mount=/host/proc/1/ns/mnt -- mkfs -t ext4 -m 1 -v /dev/loop4
 $ nsenter --mount=/host/proc/1/ns/mnt -- mkdir /testmount4
 $ nsenter --mount=/host/proc/1/ns/mnt -- mount -t ext4 /dev/loop4 /testmount4
+$ exit
 ```
 
 Next we run a container using the newly created mount:
