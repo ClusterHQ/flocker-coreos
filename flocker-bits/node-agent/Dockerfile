@@ -9,13 +9,6 @@ RUN sudo apt-get update
 RUN sudo apt-get -y --force-yes install clusterhq-flocker-cli
 RUN sudo apt-get -y --force-yes install clusterhq-flocker-node
 
-RUN sudo echo "start on runlevel [2345]" > /etc/init/flocker-control.override
-RUN sudo echo "stop on runlevel [016]" >> /etc/init/flocker-control.override
-
-EXPOSE 4523-4524
-RUN sudo bash -c "echo 'flocker-control-api	4523/tcp	# Flocker Control API port' >> /etc/services"
-RUN sudo bash -c "echo 'flocker-control-agent	4524/tcp	# Flocker Control Agent port' >> /etc/services"
-
 RUN sudo apt-get -y --force-yes install git build-essential libncurses5-dev libslang2-dev gettext zlib1g-dev libselinux1-dev debhelper lsb-release pkg-config po-debconf autoconf automake autopoint libtool
 
 RUN sudo git clone git://git.kernel.org/pub/scm/utils/util-linux/util-linux.git util-linux
@@ -55,4 +48,5 @@ RUN sudo bash -c "chmod 4755 /bin/nsmount; \
                   ln -s /sbin/nsmkfs /sbin/mkfs; \
                   ln -s /sbin/nsblkid /sbin/blkid"
 
-# CMD service flocker-control start
+# CMD service flocker-dataset-agent start
+# CMD service flocker-control-agent start

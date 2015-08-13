@@ -10,5 +10,9 @@ RUN sudo add-apt-repository -y "deb https://clusterhq-archive.s3.amazonaws.com/u
 RUN sudo apt-get update
 RUN sudo apt-get -y --force-yes install clusterhq-flocker-cli
 RUN sudo apt-get -y --force-yes install clusterhq-flocker-node
+
+WORKDIR /flockercerts
 RUN sudo bash -c "flocker-ca initialize mycluster; \
-    flocker-ca create-control-certificate $CONTROL_HOSTNAME"
+    flocker-ca create-control-certificate $CONTROL_HOSTNAME ; \
+    flocker-ca create-node-certificate; \
+    flocker-ca create-api-certificate myechuri;"
