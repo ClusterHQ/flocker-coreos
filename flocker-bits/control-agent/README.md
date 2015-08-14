@@ -28,7 +28,7 @@ Please do not change "-v /:/host" part: nsenter wrapper scripts running inside t
  * Start control agent:
 
 ```
-# /usr/sbin/flocker-control -p tcp:4523 -a tcp:$4524 --logfile=/var/log/flocker/flocker-control.log &
+# /usr/sbin/flocker-control -p tcp:4523 -a tcp:4524 --logfile=/var/log/flocker/flocker-control.log &
 ```
 
 TODO: Explore why service start yields unrecognized service:
