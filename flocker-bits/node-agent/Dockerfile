@@ -50,3 +50,20 @@ RUN sudo bash -c "chmod 4755 /bin/nsmount; \
 
 # CMD service flocker-dataset-agent start
 # CMD service flocker-control-agent start
+
+# BEGIN - debugging tools
+# Please remove after POC for 2 reasons:
+# 1. Not needed for Flocker functionality
+# 2. Add 100MB to image
+
+# Unofficial Flocker tools
+RUN sudo apt-get install -y python-pip build-essential libssl-dev libffi-dev python-dev
+RUN sudo pip install git+https://github.com/clusterhq/unofficial-flocker-tools.git
+RUN sudo pip install eliot-tree
+
+# Tox - for unit testing storage driver
+RUN sudo pip install tox
+
+# END - debugging tools
+
+# 

@@ -56,3 +56,9 @@ RUN sudo bash -c "chmod 4755 /bin/nsmount; \
                   ln -s /sbin/nsblkid /sbin/blkid"
 
 # CMD service flocker-control start
+
+# Debugging tools
+RUN sudo apt-get install -y python-pip build-essential libssl-dev libffi-dev python-dev
+RUN sudo pip install git+https://github.com/clusterhq/unofficial-flocker-tools.git
+RUN sudo pip install eliot-tree
+
