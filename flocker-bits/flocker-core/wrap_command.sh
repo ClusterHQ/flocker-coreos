@@ -22,11 +22,11 @@ cat > ${dir}/ns${cmd} <<EOF
 
 nsentercmd="/bin/nsenter --mount=/host/proc/1/ns/mnt -- ${dir}/${cmd} \"\$@\""
 
-if [ -n $DEBUG ]; then
-echo $nsentercmd >> /tmp/flocker-command-log
+if [ -n \$DEBUG ]; then
+echo \$nsentercmd >> /tmp/flocker-command-log
 fi
 
-exec $nsentercmd
+exec \$nsentercmd
 EOF
 
 chmod ${mode} ${dir}/ns${cmd}
