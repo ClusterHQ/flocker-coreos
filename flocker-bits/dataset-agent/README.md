@@ -6,7 +6,7 @@
  * Build image for Flocker Dataset Agent:
 
 ```
-$ docker build -t myechuri/anode .
+$ docker build -t clusterhq/flocker-dataset-agent .
 ```
 
  * Setup  agent certs on CoreOS host in /var/lib/flocker/node-etc-flocker

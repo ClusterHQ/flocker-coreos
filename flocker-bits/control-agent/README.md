@@ -3,10 +3,10 @@
 
 ## Steps:
 
- * Build container for Flocker Control Agent:
+ * Build image for Flocker Control Agent:
 
 ```
-$ docker build -t myechuri/cnode .
+$ docker build -t clusterhq/flocker-control-service .
 ```
 
  * Setup control agent certs on CoreOS host in /var/lib/flocker/control-etc-flocker
