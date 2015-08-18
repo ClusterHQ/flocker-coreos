@@ -20,7 +20,7 @@ mode=$3
 cat > ${dir}/ns${cmd} <<EOF
 #!/bin/bash
 
-nsentercmd="/bin/nsenter --mount=/host/proc/1/ns/mnt -- ${dir}/${cmd} \"\$@\""
+nsentercmd="/bin/nsenter --mount=/host/proc/1/ns/mnt -- ${dir}/${cmd} \$@"
 
 if [ -n \$DEBUG ]; then
 echo \$nsentercmd >> /tmp/flocker-command-log
