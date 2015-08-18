@@ -19,33 +19,11 @@ RUN sudo bash -c "cd util-linux; \
                   make"
 RUN sudo cp /util-linux/nsenter /bin
 
-RUN sudo echo "#!/bin/bash" > /bin/nsmount
-RUN sudo echo "/bin/nsenter --mount=/host/proc/1/ns/mnt -- /bin/mount \"\$@\"" >> /bin/nsmount
-RUN sudo echo "#!/bin/bash" > /bin/nsumount
-RUN sudo echo "/bin/nsenter --mount=/host/proc/1/ns/mnt -- /bin/umount \"\$@\"" >> /bin/nsumount
-RUN sudo echo "#!/bin/bash" > /bin/nslsblk
-RUN sudo echo "/bin/nsenter --mount=/host/proc/1/ns/mnt -- /bin/lsblk \"\$@\"" >> /bin/nslsblk
-RUN sudo echo "#!/bin/bash" > /sbin/nslosetup
-RUN sudo echo "/bin/nsenter --mount=/host/proc/1/ns/mnt -- /sbin/losetup \"\$@\"" >> /sbin/nslosetup
-RUN sudo echo "#!/bin/bash" > /sbin/nsmkfs
-RUN sudo echo "/bin/nsenter --mount=/host/proc/1/ns/mnt -- /sbin/mkfs \"\$@\"" >> /sbin/nsmkfs
-RUN sudo echo "#!/bin/bash" > /sbin/nsblkid
-RUN sudo echo "/bin/nsenter --mount=/host/proc/1/ns/mnt -- /sbin/blkid \"\$@\"" >> /sbin/nsblkid
-RUN sudo bash -c "chmod 4755 /bin/nsmount; \
-                  chmod 4755 /bin/nsumount; \
-                  chmod 755 /bin/nslsblk; \
-                  chmod 755 /sbin/nslosetup; \
-                  chmod 755 /sbin/nsmkfs; \
-                  chmod 755 /sbin/nsblkid; \
-                  mv /bin/mount /bin/linuxmount; \
-                  mv /bin/umount /bin/linuxumount; \
-                  mv /bin/lsblk /bin/linuxlsblk; \
-                  mv /sbin/losetup /sbin/linuxlosetup; \
-                  mv /sbin/mkfs /sbin/linuxmkfs; \
-                  mv /sbin/blkid /sbin/linuxblkid; \
-                  ln -s /bin/nsmount /bin/mount; \
-                  ln -s /bin/nsumount /bin/umount; \
-                  ln -s /bin/nslsblk /bin/lsblk; \
-                  ln -s /sbin/nslosetup /sbin/losetup; \
-                  ln -s /sbin/nsmkfs /sbin/mkfs; \
-                  ln -s /sbin/nsblkid /sbin/blkid"
+ADD wrap_command.sh /tmp/wrap_command.sh
+
+RUN bash /tmp/wrap_command.sh /bin mount 4755
+RUN bash /tmp/wrap_command.sh /bin umount 4755
+RUN bash /tmp/wrap_command.sh /bin lsblk 755
+RUN bash /tmp/wrap_command.sh /sbin losetup 755
+RUN bash /tmp/wrap_command.sh /sbin mkfs 755
+RUN bash /tmp/wrap_command.sh /sbin blkid 755
