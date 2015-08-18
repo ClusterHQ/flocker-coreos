@@ -1,3 +1,4 @@
+# dataset-agent Dockerfile
 FROM ubuntu:14.04
 MAINTAINER Madhuri Yechuri <madhuri.yechuri@clusterhq.com>
 
@@ -29,7 +30,7 @@ RUN sudo echo "/bin/nsenter --mount=/host/proc/1/ns/mnt -- /sbin/losetup \"\$@\"
 RUN sudo echo "#!/bin/bash" > /sbin/nsmkfs
 RUN sudo echo "/bin/nsenter --mount=/host/proc/1/ns/mnt -- /sbin/mkfs \"\$@\"" >> /sbin/nsmkfs
 RUN sudo echo "#!/bin/bash" > /sbin/nsblkid
-RUN sudo echo "/bin/nsenter --mount=/host/proc/1/ns/mnt -- /sbin/mkfs \"\$@\"" >> /sbin/nsblkid
+RUN sudo echo "/bin/nsenter --mount=/host/proc/1/ns/mnt -- /sbin/blkid \"\$@\"" >> /sbin/nsblkid
 RUN sudo bash -c "chmod 4755 /bin/nsmount; \
                   chmod 4755 /bin/nsumount; \
                   chmod 755 /bin/nslsblk; \
@@ -67,3 +68,5 @@ RUN sudo pip install tox
 # END - debugging tools
 
 # 
+
+CMD ["/usr/sbin/flocker-dataset-agent"]

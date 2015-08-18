@@ -6,7 +6,7 @@
  * Build image for Flocker Dataset Agent:
 
 ```
-$ docker build -t myechuri/anode .
+$ docker build -t clusterhq/flocker-dataset-agent .
 ```
 
  * Setup  agent certs on CoreOS host in /var/lib/flocker/node-etc-flocker
@@ -30,7 +30,7 @@ dataset:
  * Start Flocker Dataset Agent as a privileged container:
 
 ```
-$ docker run --net=host --privileged -v /:/host -v /var/lib/flocker/node-etc-flocker:/etc/flocker -v /dev:/dev -ti myechuri/anode
+$ docker run --net=host --privileged -v /:/host -v /var/lib/flocker/node-etc-flocker:/etc/flocker -v /dev:/dev -ti clusterhq/flocker-dataset-agent
 ```
 
 Please do not change "-v /:/host" part: nsenter wrapper scripts running inside the container rely on "/:/host" mapping.

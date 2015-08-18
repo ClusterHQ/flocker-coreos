@@ -1,12 +1,12 @@
-## Containerize Flocker Node Agents.
+## Containerize Flocker Container Agent.
 
 
 ## Steps:
 
- * Build image for Flocker Node Agent:
+ * Build image for Flocker Container Agent:
 
 ```
-$ docker build -t myechuri/anode .
+$ docker build -t clusterhq/flocker-container-agent .
 ```
 
  * Setup  agent certs on CoreOS host in /var/lib/flocker/node-etc-flocker
@@ -27,10 +27,10 @@ dataset:
     secret_access_key: "xxx"
 ```
 
- * Start Flocker Control Agent as a privileged container:
+ * Start Flocker Container Agent as a privileged container:
 
 ```
-$ docker run --net=host --privileged -v /:/host -v /var/lib/flocker/node-etc-flocker:/etc/flocker -v /dev:/dev -v /var/run/docker.sock:/var/run/docker.sock -ti myechuri/anode
+$ docker run --net=host --privileged -v /:/host -v /var/lib/flocker/node-etc-flocker:/etc/flocker -v /dev:/dev -v /var/run/docker.sock:/var/run/docker.sock -ti clusterhq/flocker-container-agent
 ```
 
 Please do not change "-v /:/host" part: nsenter wrapper scripts running inside the container rely on "/:/host" mapping.
