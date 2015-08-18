@@ -21,6 +21,25 @@ dataset:
     secret_access_key: "xxx"
 ```
 
+Here are the steps to generate the certs:
+
+```
+$ export COREOSHOST=XXX
+$ export COREOSKEY=~/.ssh/XXX.pem
+$ mkdir tempcerts
+$ cd tempcerts
+$ flocker-ca initialize coreostest
+$ flocker-ca create-control-certificate $COREOSHOST
+$ flocker-ca create-node-certificate
+$ flocker-ca create-api-certificate coreuser
+$ mv XXX.crt node.crt
+$ mv XXX.key node.key
+$ mv control-${COREOSHOST}.crt control-service.crt
+$ mv control-${COREOSHOST}.key control-service.key
+$ ssh -i ${COREOSKEY} core@${COREOSHOST} mkdir -p /home/core/bakedcerts
+$ scp -i ${COREOSKEY} * core@${COREOSHOST}:/home/core/bakedcerts
+```
+
 Run:
 
 ```
