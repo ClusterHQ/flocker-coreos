@@ -8,30 +8,7 @@
 ```
 $ docker build -t clusterhq/flocker-control-service .
 ```
-
- * Setup control agent certs on CoreOS host in /var/lib/flocker/control-etc-flocker
-
-```
-core@ip-172-31-40-181 /var/lib/flocker $ ls /var/lib/flocker/control-etc-flocker
-cluster.crt  control-service.crt  control-service.key
-```
- * Verify CoreOS host ports 4523-4524 have security policies setup for external access.
-
- * Start Flocker Control Agent as a privileged container:
-
-```
-$ docker run --net=host --privileged -v /:/host -p 4523-4524:4523-4524 -v /var/lib/flocker/control-etc-flocker:/etc/flocker -ti clusterhq/flocker-control-service
-```
-
-Please do not change "-v /:/host" part: nsenter wrapper scripts running inside the container rely on "/:/host" mapping.
-
- * Start control agent:
-
-```
-#  &
-```
-
- * Check health of Flocker cluster:
+See main README for how to run it.
 
 Find IP of control service:
 ```

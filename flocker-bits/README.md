@@ -7,6 +7,20 @@
  * Copy them to your CoreOS node, e.g. `/home/core/bakedcerts` below.
  * Write out `agent.yml` in same directory.
 
+```
+$ cat /var/lib/flocker/node-etc-flocker/agent.yml
+"version": 1
+"control-service":
+   "hostname": "xxx"
+   "port": 4524
+dataset:
+    backend: "aws"
+    region: "us-west-2"
+    zone: "us-west-2b"
+    access_key_id: "xxxx"
+    secret_access_key: "xxx"
+```
+
 Run:
 
 ```
@@ -35,6 +49,6 @@ LOCAL_IP=10.164.167.217
 USER=coreuser
 echo > ~/bin/flocker-volumes <<EOF
 #!/bin/sh                                                                                                        |
-docker run -v $CERTS:/flockercerts -ti clusterhq/flocker-dataset-agent flocker-volumes --certs-path=/flockercerts --user=coreuser --control-service=10.164.167.217 $@
+docker run -v $CERTS:/flockercerts -ti clusterhq/flocker-dataset-agent flocker-volumes --certs-path=/flockercerts --user=coreuser --control-service=$LOCAL_IP $@
 EOF
 ```
