@@ -48,3 +48,4 @@ TODO: Explore why service start yields unrecognized service:
 root@849ca1785bf5:/etc/init# service flocker-dataset-agent start
 flocker-dataset-agent: unrecognized service
 ```
+ * Verify that /flocker directory exists on the CoreOS host where the container is running.
