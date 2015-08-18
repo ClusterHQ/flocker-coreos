@@ -30,7 +30,7 @@ dataset:
  * Start Flocker Control Agent as a privileged container:
 
 ```
-$ docker run --privileged -v /:/host -v /var/lib/flocker/node-etc-flocker:/etc/flocker -v /dev:/dev -v /var/run/docker.sock:/var/run/docker.sock -ti myechuri/anode
+$ docker run --net=host --privileged -v /:/host -v /var/lib/flocker/node-etc-flocker:/etc/flocker -v /dev:/dev -v /var/run/docker.sock:/var/run/docker.sock -ti myechuri/anode
 ```
 
 Please do not change "-v /:/host" part: nsenter wrapper scripts running inside the container rely on "/:/host" mapping.

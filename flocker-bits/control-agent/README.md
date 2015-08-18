@@ -20,7 +20,7 @@ cluster.crt  control-service.crt  control-service.key
  * Start Flocker Control Agent as a privileged container:
 
 ```
-$ docker run --privileged -v /:/host -p 4523-4524:4523-4524 -v /var/lib/flocker/control-etc-flocker:/etc/flocker -ti myechuri/cnode
+$ docker run --net=host --privileged -v /:/host -p 4523-4524:4523-4524 -v /var/lib/flocker/control-etc-flocker:/etc/flocker -ti myechuri/cnode
 ```
 
 Please do not change "-v /:/host" part: nsenter wrapper scripts running inside the container rely on "/:/host" mapping.

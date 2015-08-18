@@ -9,4 +9,6 @@
 $ docker run -ti myechuri/t1
 ```
 
- * Run Flocker CA container: copy certs in container's home directory into host's /var/opt/flocker/certs/, which will in turn be bind mounted in control agent and node agents' /etc/flocker/ .
+ * Alternatively, you can run `flocker-ca` on your local machine.
+
+ * Run Flocker CA container: copy certs in container's home directory into host's /var/lib/flocker/node-etc-flocker/, which will in turn be bind mounted in control agent and node agents' /etc/flocker/ .
