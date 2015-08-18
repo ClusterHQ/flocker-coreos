@@ -2,10 +2,20 @@
 
 ## Steps
 
- * Run `flocker-ca` on your local machine to generate node, cluster and control-service certs.
- * mkdir `/flocker` on CoreOS host.
- * Copy them to your CoreOS node, e.g. `/home/core/bakedcerts` below.
- * Write out `agent.yml` in same directory.
+### setup
+
+Setup the hostname and private key variables and create the folders needed
+
+```
+$ export COREOSHOST=XXX
+$ export COREOSKEY=~/.ssh/XXX.pem
+$ ssh -i ${COREOSKEY} core@${COREOSHOST} git clone https://github.com/clusterhq/flocker-coreos
+$ ssh -i ${COREOSKEY} core@${COREOSHOST} mkdir -p /home/core/bakedcerts
+$ ssh -i ${COREOSKEY} core@${COREOSHOST} sudo mkdir -p /flocker
+```
+
+### agent.yml
+Write out `agent.yml` into `/home/core/bakedcerts`
 
 ```
 $ cat /var/lib/flocker/node-etc-flocker/agent.yml
@@ -21,11 +31,10 @@ dataset:
     secret_access_key: "xxx"
 ```
 
-Here are the steps to generate the certs:
+### certs
+Here are the steps to generate the certs (from your local machine where you need flocker-ca installed):
 
 ```
-$ export COREOSHOST=XXX
-$ export COREOSKEY=~/.ssh/XXX.pem
 $ mkdir tempcerts
 $ cd tempcerts
 $ flocker-ca initialize coreostest
@@ -36,11 +45,20 @@ $ mv XXX.crt node.crt
 $ mv XXX.key node.key
 $ mv control-${COREOSHOST}.crt control-service.crt
 $ mv control-${COREOSHOST}.key control-service.key
-$ ssh -i ${COREOSKEY} core@${COREOSHOST} mkdir -p /home/core/bakedcerts
 $ scp -i ${COREOSKEY} * core@${COREOSHOST}:/home/core/bakedcerts
 ```
 
-Run:
+### build images
+
+Now we run the image build script:
+
+```
+$ ssh -i ${COREOSKEY} core@${COREOSHOST}
+coreos$ cd ~/flocker-coreos/flocker-bits
+coreos$ sh buildimages.sh
+```
+
+### run containers
 
 ```
 CERTS=/home/core/bakedcerts
@@ -60,7 +78,7 @@ docker run --net=host --privileged -p 4523-4524:4523-4524 \
     -d clusterhq/flocker-control-service
 ```
 
-Create a wrapper:
+### volume cli wrapper
 
 ```
 mkdir ~/bin
