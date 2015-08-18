@@ -3,12 +3,25 @@
 
 ## Steps:
 
- * Build container for Flocker CA and certificates for cluster administrator, control agent, and node agents.
+ * Run `flocker-ca` on your local machine to generate node, cluster and control-service certs.
+ * Copy them to your CoreOS node, e.g. `/home/core/bakedcerts` below.
+ * Write out `agent.yml` in same directory.
+
+Run:
 
 ```
-$ docker run -ti myechuri/t1
-```
+CERTS=/home/core/bakedcerts
 
- * Alternatively, you can run `flocker-ca` on your local machine.
+docker run --net=host --privileged \
+    -v /:/host -v $CERTS:/etc/flocker \
+    -v /dev:/dev -v /var/run/docker.sock:/var/run/docker.sock -d \
+    clusterhq/flocker-container-agent
 
- * Run Flocker CA container: copy certs in container's home directory into host's /var/lib/flocker/node-etc-flocker/, which will in turn be bind mounted in control agent and node agents' /etc/flocker/ .
+docker run --net=host --privileged \
+    -v /:/host -v $CERTS:/etc/flocker \
+    -v /dev:/dev -v /var/run/docker.sock:/var/run/docker.sock -d \
+    clusterhq/flocker-dataset-agent
+
+docker run --net=host --privileged -p 4523-4524:4523-4524 \
+    -v /:/host -v $CERTS:/etc/flocker \
+    -d clusterhq/flocker-control-service
