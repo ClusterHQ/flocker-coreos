@@ -23,6 +23,8 @@ dataset:
 
 Run:
 
+TODO make a docker volume container for the control service state!
+
 ```
 CERTS=/home/core/bakedcerts
 
