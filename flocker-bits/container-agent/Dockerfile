@@ -68,3 +68,5 @@ RUN sudo pip install tox
 # END - debugging tools
 
 # 
+
+CMD ["/usr/sbin/flocker-container-agent"]

@@ -10,9 +10,6 @@ RUN sudo apt-get update
 RUN sudo apt-get -y --force-yes install clusterhq-flocker-cli
 RUN sudo apt-get -y --force-yes install clusterhq-flocker-node
 
-RUN sudo echo "start on runlevel [2345]" > /etc/init/flocker-control.override
-RUN sudo echo "stop on runlevel [016]" >> /etc/init/flocker-control.override
-
 EXPOSE 4523-4524
 RUN sudo bash -c "echo 'flocker-control-api	4523/tcp	# Flocker Control API port' >> /etc/services"
 RUN sudo bash -c "echo 'flocker-control-agent	4524/tcp	# Flocker Control Agent port' >> /etc/services"
@@ -56,10 +53,10 @@ RUN sudo bash -c "chmod 4755 /bin/nsmount; \
                   ln -s /sbin/nsmkfs /sbin/mkfs; \
                   ln -s /sbin/nsblkid /sbin/blkid"
 
-# CMD service flocker-control start
-
 # Debugging tools
 RUN sudo apt-get install -y python-pip build-essential libssl-dev libffi-dev python-dev
 RUN sudo pip install git+https://github.com/clusterhq/unofficial-flocker-tools.git
 RUN sudo pip install eliot-tree
+
+CMD ["/usr/sbin/flocker-control", "-p", "tcp:4523", "-a", "tcp:4524"]
 
