@@ -1,5 +1,5 @@
 # container-agent Dockerfile
-FROM clusterhq/ubuntu-nsenter
+FROM ubuntu:14.04
 MAINTAINER Madhuri Yechuri <madhuri.yechuri@clusterhq.com>
 
 RUN sudo apt-get update
@@ -9,6 +9,15 @@ RUN sudo add-apt-repository -y "deb https://clusterhq-archive.s3.amazonaws.com/u
 RUN sudo apt-get update
 RUN sudo apt-get -y --force-yes install clusterhq-flocker-cli
 RUN sudo apt-get -y --force-yes install clusterhq-flocker-node
+
+RUN sudo apt-get -y --force-yes install git build-essential libncurses5-dev libslang2-dev gettext zlib1g-dev libselinux1-dev debhelper lsb-release pkg-config po-debconf autoconf automake autopoint libtool
+
+RUN sudo git clone git://git.kernel.org/pub/scm/utils/util-linux/util-linux.git util-linux
+RUN sudo bash -c "cd util-linux; \
+                  ./autogen.sh; \
+                  ./configure --without-python --disable-all-programs --enable-nsenter; \
+                  make"
+RUN sudo cp /util-linux/nsenter /bin
 
 RUN sudo echo "#!/bin/bash" > /bin/nsmount
 RUN sudo echo "/bin/nsenter --mount=/host/proc/1/ns/mnt -- /bin/mount \"\$@\"" >> /bin/nsmount
