@@ -49,7 +49,8 @@ LOCAL_IP=10.164.167.217
 USER=coreuser
 echo > ~/bin/flocker-volumes <<EOF
 #!/bin/sh
-docker run -v $CERTS:/flockercerts -ti clusterhq/flocker-dataset-agent flocker-volumes --certs-path=/flockercerts --user=coreuser --control-service=$LOCAL_IP $@
+docker run -v $CERTS:/flockercerts -ti clusterhq/flocker-dataset-agent flocker-volumes \
+    --certs-path=/flockercerts --user=coreuser --control-service=$LOCAL_IP $@
 EOF
 chmod +x ~/bin/flocker-volumes
 ~/bin/flocker-volumes list-nodes
