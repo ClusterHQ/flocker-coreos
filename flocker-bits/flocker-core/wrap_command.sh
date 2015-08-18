@@ -20,13 +20,13 @@ mode=$3
 cat > ${dir}/ns${cmd} <<EOF
 #!/bin/bash
 
-cmd="/bin/nsenter --mount=/host/proc/1/ns/mnt -- ${dir}/${cmd} \"\$@\"
+nsentercmd="/bin/nsenter --mount=/host/proc/1/ns/mnt -- ${dir}/${cmd} \"\$@\""
 
 if [ -n $DEBUG ]; then
-echo $cmd >> /tmp/flocker-command-log
+echo $nsentercmd >> /tmp/flocker-command-log
 fi
 
-exec $cmd
+exec $nsentercmd
 EOF
 
 chmod ${mode} ${dir}/ns${cmd}
