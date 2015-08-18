@@ -1,14 +1,28 @@
 ## Containerize Flocker parts.
 
+## Steps
 
-## objective
+ * Run `flocker-ca` on your local machine to generate node, cluster and control-service certs.
+ * mkdir `/flocker` on CoreOS host.
+ * Copy them to your CoreOS node, e.g. `/home/core/bakedcerts` below.
+ * Write out `agent.yml` in same directory.
 
- * Setup Flocker CA in a container.
+Run:
 
- * mkdir /flocker on CoreOS host.
+```
+CERTS=/home/core/bakedcerts
 
- * Start Flocker Control Agent in a container.
+docker run --net=host --privileged \
+    -v /:/host -v $CERTS:/etc/flocker \
+    -v /dev:/dev -v /var/run/docker.sock:/var/run/docker.sock -d \
+    clusterhq/flocker-container-agent
 
- * Start Flocker Dataset Agent in a container.
+docker run --net=host --privileged \
+    -v /:/host -v $CERTS:/etc/flocker \
+    -v /dev:/dev -v /var/run/docker.sock:/var/run/docker.sock -d \
+    clusterhq/flocker-dataset-agent
 
- * Start Flocker Container Agent in a container.
+docker run --net=host --privileged -p 4523-4524:4523-4524 \
+    -v /:/host -v $CERTS:/etc/flocker \
+    -d clusterhq/flocker-control-service
+```
