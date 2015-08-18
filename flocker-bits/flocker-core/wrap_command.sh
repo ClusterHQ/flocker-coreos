@@ -17,7 +17,7 @@ dir=$1
 cmd=$2
 mode=$3
 
-echo > ${dir}/ns${cmd} <<EOF
+cat > ${dir}/ns${cmd} <<EOF
 #!/bin/bash
 
 cmd="/bin/nsenter --mount=/host/proc/1/ns/mnt -- ${dir}/${cmd} \"$@\"
