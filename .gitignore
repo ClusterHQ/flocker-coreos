@@ -14,3 +14,4 @@ Thumbs.db
 .vagrant
 *.box
 tempcerts
+secrets.txt
