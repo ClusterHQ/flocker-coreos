@@ -1,5 +1,4 @@
 #!/bin/sh
-docker build -t clusterhq/ubuntu-nsenter ubuntu-nsenter
 docker build -t clusterhq/flocker-core flocker-core
 docker build -t clusterhq/flocker-container-agent container-agent
 docker build -t clusterhq/flocker-control-service control-agent
