@@ -67,7 +67,12 @@ CERTS=/home/core/bakedcerts
 touch /tmp/flocker-command-log
 
 docker run -d --net=host -v $CERTS:/etc/flocker \
+    --name=flocker-control-service \
+    clusterhq/flocker-control-service
+
+docker run -d --net=host -v $CERTS:/etc/flocker \
     -v /var/run/docker.sock:/var/run/docker.sock \
+    --name=flocker-container-agent \
     clusterhq/flocker-container-agent
 
 docker run --net=host --privileged \
@@ -75,10 +80,8 @@ docker run --net=host --privileged \
     -v /tmp/flocker-command-log:/tmp/flocker-command-log \
     -v /flocker:/flocker -v /:/host -v $CERTS:/etc/flocker \
     -v /dev:/dev -d \
+    --name=flocker-dataset-agent \
     clusterhq/flocker-dataset-agent
-
-docker run -d --net=host -v $CERTS:/etc/flocker \
-    clusterhq/flocker-control-service
 ```
 
 ### DEBUG
@@ -112,3 +115,9 @@ SERVER     ADDRESS
 core@ip-10-183-35-14 ~/bin $ ./flocker-volumes create -n 336dba8b -s 10G
 ```
 
+### debugging flocker
+```
+wget https://raw.githubusercontent.com/ClusterHQ/eliot/error-output-proto/error-extract.py
+docker logs flocker-dataset-agent | docker run \
+    -i -v $PWD:/app python python /app/error-extract.py
+```
