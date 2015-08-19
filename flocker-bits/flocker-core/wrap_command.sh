@@ -9,7 +9,7 @@
 # wrap_command.sh /sbin mount 4755
 
 # when running the container (e.g. control-node)
-# set the DEBUG env to true and mount /tmp/flocker-command-log 
+# set the DEBUG env to true and mount /tmp/flocker-command-log
 # onto the host to get a list of the commands run in this way
 
 
