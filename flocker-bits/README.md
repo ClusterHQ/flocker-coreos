@@ -60,22 +60,22 @@ coreos$ sh buildimages.sh
 
 ### run containers
 
+TODO make a docker volume container for the control service state!
+
 ```
 CERTS=/home/core/bakedcerts
 
-docker run --net=host --privileged \
-    -v /:/host -v $CERTS:/etc/flocker \
-    -v /dev:/dev -v /var/run/docker.sock:/var/run/docker.sock -d \
+docker run -d --net=host -v $CERTS:/etc/flocker \
+    -v /var/run/docker.sock:/var/run/docker.sock \
     clusterhq/flocker-container-agent
 
-docker run --net=host --privileged \
-    -v /:/host -v $CERTS:/etc/flocker \
-    -v /dev:/dev -v /var/run/docker.sock:/var/run/docker.sock -d \
+docker run -d --net=host --privileged \
+    -v /flocker:/flocker -v /:/host -v $CERTS:/etc/flocker \
+    -v /dev:/dev -v /var/run/docker.sock:/var/run/docker.sock \
     clusterhq/flocker-dataset-agent
 
-docker run --net=host --privileged -p 4523-4524:4523-4524 \
-    -v /:/host -v $CERTS:/etc/flocker \
-    -d clusterhq/flocker-control-service
+docker run -d --net=host -v $CERTS:/etc/flocker \
+    clusterhq/flocker-control-service
 ```
 
 ### DEBUG
