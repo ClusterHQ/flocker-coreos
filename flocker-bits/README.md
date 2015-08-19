@@ -97,9 +97,18 @@ mkdir ~/bin
 USER=coreuser
 cat > ~/bin/flocker-volumes <<EOF
 #!/bin/sh
-docker run -v $CERTS:/flockercerts -ti clusterhq/flocker-tools flocker-volumes \
-    --certs-path=/flockercerts --user=coreuser --control-service=$LOCAL_IP $@
+docker run -v $CERTS:/flockercerts -ti clusterhq/flocker-tools flocker-volumes \\
+    --certs-path=/flockercerts --user=coreuser --control-service=$LOCAL_IP \$@
 EOF
 chmod +x ~/bin/flocker-volumes
 ~/bin/flocker-volumes list-nodes
 ```
+
+### testing
+```
+core@ip-10-183-35-14 ~/bin $ ./flocker-volumes list-nodes
+SERVER     ADDRESS
+336dba8b   10.183.35.14
+core@ip-10-183-35-14 ~/bin $ ./flocker-volumes create -n 336dba8b -s 10G
+```
+
