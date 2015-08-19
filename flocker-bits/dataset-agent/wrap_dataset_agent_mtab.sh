@@ -6,14 +6,14 @@
 # prime it, before we go off into the backgrounded subshell
 unlink /etc/mtab
 /bin/nsenter --mount=/host/proc/1/ns/mnt -- cat /etc/mtab > /etc/mtab
-echo "primed mtab"
+>&2 echo "primed mtab"
 
 # update mtab atomically every second
 (
     while true; do
         /bin/nsenter --mount=/host/proc/1/ns/mnt -- cat /etc/mtab > /etc/mtab.tmp
         mv /etc/mtab.tmp /etc/mtab
-        echo "updated mtab"
+        >&2 echo "updated mtab"
         sleep 1
     done
 ) &
