@@ -65,6 +65,7 @@ coreos$ sh buildimages.sh
 TODO make a docker volume container for the control service state!
 
 ```
+docker rm -f flocker-control-service flocker-container-agent flocker-dataset-agent
 CERTS=/home/core/bakedcerts
 touch /tmp/flocker-command-log
 
