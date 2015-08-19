@@ -92,10 +92,10 @@ To disable, unset DEBUG=1.
 ### volume cli wrapper
 
 ```
+LOCAL_IP=10.164.167.217 # XXX SET THIS (see ifconfig eth0 output)
 mkdir ~/bin
-LOCAL_IP=10.164.167.217
 USER=coreuser
-echo > ~/bin/flocker-volumes <<EOF
+cat > ~/bin/flocker-volumes <<EOF
 #!/bin/sh
 docker run -v $CERTS:/flockercerts -ti clusterhq/flocker-tools flocker-volumes \
     --certs-path=/flockercerts --user=coreuser --control-service=$LOCAL_IP $@
