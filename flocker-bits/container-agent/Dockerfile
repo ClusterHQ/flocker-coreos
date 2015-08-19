@@ -34,6 +34,7 @@ RUN sudo bash -c "chmod 4755 /bin/nsmount; \
                   chmod 4755 /bin/nsumount; \
                   chmod 755 /bin/nslsblk; \
                   chmod 755 /sbin/nslosetup; \
+                  chmod 755 /sbin/nsmkfs; \
                   chmod 755 /sbin/nsblkid; \
                   mv /bin/mount /bin/linuxmount; \
                   mv /bin/umount /bin/linuxumount; \
