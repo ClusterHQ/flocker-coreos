@@ -72,7 +72,8 @@ docker run -d --net=host -v $CERTS:/etc/flocker \
     --name=flocker-control-service \
     clusterhq/flocker-control-service
 
-docker run -d --net=host -v $CERTS:/etc/flocker \
+docker run -d --net=host --privileged \
+    -v $CERTS:/etc/flocker \
     -v /var/run/docker.sock:/var/run/docker.sock \
     --name=flocker-container-agent \
     clusterhq/flocker-container-agent
