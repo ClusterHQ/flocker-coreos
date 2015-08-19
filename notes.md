@@ -88,3 +88,11 @@ fuse already comes with kernel
 ### Madhuri research
 
  * Docker PR (https://github.com/docker/docker/pull/14097) that enables MS_SHARED rootfs mount option. Sample usage dscribed in https://huaminchen.wordpress.com/2015/07/31/latest-status-on-docker-mount-propagation-development/ 
+
+### Kubernetes
+
+https://github.com/kubernetes/kubernetes/issues/6848
+
+### ZFS refactoring
+
+ * https://github.com/ClusterHQ/flocker/blob/master/flocker/volume/filesystems/zfs.py#L70

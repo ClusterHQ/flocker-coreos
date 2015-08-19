@@ -1,46 +1,15 @@
-## Containerize Flocker Node Agents.
+## Containerize Flocker Container Agent.
 
 
 ## Steps:
 
- * Build image for Flocker Node Agent:
+ * Build image for Flocker Container Agent:
 
 ```
-$ docker build -t myechuri/anode .
+$ docker build -t clusterhq/flocker-container-agent .
 ```
 
- * Setup  agent certs on CoreOS host in /var/lib/flocker/node-etc-flocker
-
-```
-$ ls /var/lib/flocker/node-etc-flocker
-agent.yml  cluster.crt  node.crt  node.key
-$ cat /var/lib/flocker/node-etc-flocker/agent.yml 
-"version": 1
-"control-service":
-   "hostname": "ec2-52-27-159-173.us-west-2.compute.amazonaws.com"
-   "port": 4524
-dataset:
-    backend: "aws"
-    region: "us-west-2"
-    zone: "us-west-2b"
-    access_key_id: "xxxx"
-    secret_access_key: "xxx"
-```
-
- * Start Flocker Control Agent as a privileged container:
-
-```
-$ docker run --privileged -v /:/host -v /var/lib/flocker/node-etc-flocker:/etc/flocker -v /dev:/dev -v /var/run/docker.sock:/var/run/docker.sock -ti myechuri/anode
-```
-
-Please do not change "-v /:/host" part: nsenter wrapper scripts running inside the container rely on "/:/host" mapping.
-
- * At the command line prompt, start container agent:
-
-```
-# /usr/sbin/flocker-container-agent --logfile=/var/log/flocker/flocker-container-agent.log &
-
-```
+See main README for how to run it.
 
  * Verify that container agent log asserts successful communication with control agent:
 

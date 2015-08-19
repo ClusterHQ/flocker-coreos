@@ -1,3 +1,4 @@
+# control-service Dockerfile
 FROM ubuntu:14.04
 MAINTAINER Madhuri Yechuri <madhuri.yechuri@clusterhq.com>
 
@@ -8,9 +9,6 @@ RUN sudo add-apt-repository -y "deb https://clusterhq-archive.s3.amazonaws.com/u
 RUN sudo apt-get update
 RUN sudo apt-get -y --force-yes install clusterhq-flocker-cli
 RUN sudo apt-get -y --force-yes install clusterhq-flocker-node
-
-RUN sudo echo "start on runlevel [2345]" > /etc/init/flocker-control.override
-RUN sudo echo "stop on runlevel [016]" >> /etc/init/flocker-control.override
 
 EXPOSE 4523-4524
 RUN sudo bash -c "echo 'flocker-control-api	4523/tcp	# Flocker Control API port' >> /etc/services"
@@ -36,7 +34,7 @@ RUN sudo echo "/bin/nsenter --mount=/host/proc/1/ns/mnt -- /sbin/losetup \"\$@\"
 RUN sudo echo "#!/bin/bash" > /sbin/nsmkfs
 RUN sudo echo "/bin/nsenter --mount=/host/proc/1/ns/mnt -- /sbin/mkfs \"\$@\"" >> /sbin/nsmkfs
 RUN sudo echo "#!/bin/bash" > /sbin/nsblkid
-RUN sudo echo "/bin/nsenter --mount=/host/proc/1/ns/mnt -- /sbin/mkfs \"\$@\"" >> /sbin/nsblkid
+RUN sudo echo "/bin/nsenter --mount=/host/proc/1/ns/mnt -- /sbin/blkid \"\$@\"" >> /sbin/nsblkid
 RUN sudo bash -c "chmod 4755 /bin/nsmount; \
                   chmod 4755 /bin/nsumount; \
                   chmod 755 /bin/nslsblk; \
@@ -56,10 +54,10 @@ RUN sudo bash -c "chmod 4755 /bin/nsmount; \
                   ln -s /sbin/nsmkfs /sbin/mkfs; \
                   ln -s /sbin/nsblkid /sbin/blkid"
 
-# CMD service flocker-control start
-
 # Debugging tools
 RUN sudo apt-get install -y python-pip build-essential libssl-dev libffi-dev python-dev
 RUN sudo pip install git+https://github.com/clusterhq/unofficial-flocker-tools.git
 RUN sudo pip install eliot-tree
+
+CMD ["/usr/sbin/flocker-control", "-p", "tcp:4523", "-a", "tcp:4524"]
 
