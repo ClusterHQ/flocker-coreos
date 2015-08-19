@@ -64,14 +64,17 @@ TODO make a docker volume container for the control service state!
 
 ```
 CERTS=/home/core/bakedcerts
+touch /tmp/flocker-command-log
 
 docker run -d --net=host -v $CERTS:/etc/flocker \
     -v /var/run/docker.sock:/var/run/docker.sock \
     clusterhq/flocker-container-agent
 
-docker run -d --net=host --privileged \
+docker run --net=host --privileged \
+    -e DEBUG=1 \
+    -v /tmp/flocker-command-log:/tmp/flocker-command-log \
     -v /flocker:/flocker -v /:/host -v $CERTS:/etc/flocker \
-    -v /dev:/dev -v /var/run/docker.sock:/var/run/docker.sock \
+    -v /dev:/dev -d \
     clusterhq/flocker-dataset-agent
 
 docker run -d --net=host -v $CERTS:/etc/flocker \
@@ -82,18 +85,9 @@ docker run -d --net=host -v $CERTS:/etc/flocker \
 
 There is a DEBUG flag that will log all wrapped nsenter commands to `/tmp/flocker-command-log`.
 
-To activate this - set the `DEBUG` env to true and mount `/tmp/flocker-command-log`:
+To activate this - set the `DEBUG` env to true and mount `/tmp/flocker-command-log` when running the dataset agent, as shown above.
+To disable, unset DEBUG=1.
 
-```
-CERTS=/home/core/bakedcerts
-
-docker run --net=host --privileged \
-    -v /:/host -v $CERTS:/etc/flocker \
-    -e DEBUG=1 \
-    -v /tmp/flocker-command-log:/tmp/flocker-command-log \
-    -v /dev:/dev -v /var/run/docker.sock:/var/run/docker.sock -d \
-    clusterhq/flocker-dataset-agent
-```
 
 ### volume cli wrapper
 
