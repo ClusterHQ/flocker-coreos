@@ -17,6 +17,8 @@ $ ssh -i ${COREOSKEY} core@${COREOSHOST} sudo mkdir -p /flocker
 ### agent.yml
 Write out `agent.yml` into `/home/core/bakedcerts`
 
+**IMPORTANT** - make sure that all your nodes are in the same zone, and update 'zone' below for the specific zone that all your nodes are in
+
 ```
 $ cat /var/lib/flocker/node-etc-flocker/agent.yml
 "version": 1
