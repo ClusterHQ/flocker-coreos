@@ -2,10 +2,20 @@
 
 ## Steps
 
- * Run `flocker-ca` on your local machine to generate node, cluster and control-service certs.
- * mkdir `/flocker` on CoreOS host.
- * Copy them to your CoreOS node, e.g. `/home/core/bakedcerts` below.
- * Write out `agent.yml` in same directory.
+### setup
+
+Setup the hostname and private key variables and create the folders needed
+
+```
+$ export COREOSHOST=XXX
+$ export COREOSKEY=~/.ssh/XXX.pem
+$ ssh -i ${COREOSKEY} core@${COREOSHOST} git clone https://github.com/clusterhq/flocker-coreos
+$ ssh -i ${COREOSKEY} core@${COREOSHOST} mkdir -p /home/core/bakedcerts
+$ ssh -i ${COREOSKEY} core@${COREOSHOST} sudo mkdir -p /flocker
+```
+
+### agent.yml
+Write out `agent.yml` into `/home/core/bakedcerts`
 
 ```
 $ cat /var/lib/flocker/node-etc-flocker/agent.yml
@@ -21,27 +31,65 @@ dataset:
     secret_access_key: "xxx"
 ```
 
-Run:
+### certs
+Here are the steps to generate the certs (from your local machine where you need flocker-ca installed):
+
+```
+$ mkdir tempcerts
+$ cd tempcerts
+$ flocker-ca initialize coreostest
+$ flocker-ca create-control-certificate $COREOSHOST
+$ flocker-ca create-node-certificate
+$ flocker-ca create-api-certificate coreuser
+$ mv XXX.crt node.crt
+$ mv XXX.key node.key
+$ mv control-${COREOSHOST}.crt control-service.crt
+$ mv control-${COREOSHOST}.key control-service.key
+$ scp -i ${COREOSKEY} * core@${COREOSHOST}:/home/core/bakedcerts
+```
+
+### build images
+
+Now we run the image build script:
+
+```
+$ ssh -i ${COREOSKEY} core@${COREOSHOST}
+coreos$ cd ~/flocker-coreos/flocker-bits
+coreos$ sh buildimages.sh
+```
+
+### run containers
 
 TODO make a docker volume container for the control service state!
 
 ```
 CERTS=/home/core/bakedcerts
+touch /tmp/flocker-command-log
 
 docker run -d --net=host -v $CERTS:/etc/flocker \
     -v /var/run/docker.sock:/var/run/docker.sock \
     clusterhq/flocker-container-agent
 
-docker run -d --net=host --privileged \
+docker run --net=host --privileged \
+    -e DEBUG=1 \
+    -v /tmp/flocker-command-log:/tmp/flocker-command-log \
     -v /flocker:/flocker -v /:/host -v $CERTS:/etc/flocker \
-    -v /dev:/dev -v /var/run/docker.sock:/var/run/docker.sock \
+    -v /dev:/dev -d \
     clusterhq/flocker-dataset-agent
 
 docker run -d --net=host -v $CERTS:/etc/flocker \
     clusterhq/flocker-control-service
 ```
 
-Create a wrapper:
+### DEBUG
+
+There is a DEBUG flag that will log all wrapped nsenter commands to `/tmp/flocker-command-log`.
+
+To activate this - set the `DEBUG` env to true and mount `/tmp/flocker-command-log` when running the dataset agent, as shown above.
+To disable, unset DEBUG=1.
+
+
+### volume cli wrapper
 
 ```
 mkdir ~/bin
@@ -49,7 +97,7 @@ LOCAL_IP=10.164.167.217
 USER=coreuser
 echo > ~/bin/flocker-volumes <<EOF
 #!/bin/sh
-docker run -v $CERTS:/flockercerts -ti clusterhq/flocker-dataset-agent flocker-volumes \
+docker run -v $CERTS:/flockercerts -ti clusterhq/flocker-tools flocker-volumes \
     --certs-path=/flockercerts --user=coreuser --control-service=$LOCAL_IP $@
 EOF
 chmod +x ~/bin/flocker-volumes
