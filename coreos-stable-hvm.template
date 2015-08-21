@@ -87,7 +87,7 @@
         "GroupDescription": "CoreOS SecurityGroup",
         "SecurityGroupIngress": [
           {"IpProtocol": "tcp", "FromPort": "22", "ToPort": "22", "CidrIp": {"Ref": "AllowSSHFrom"}},
-          {"IpProtocol": "tcp", "FromPort": "4523", "ToPort": "4523", "CidrIp": {"Ref": "AllowSSHFrom"}},
+          {"IpProtocol": "tcp", "FromPort": "4523", "ToPort": "4523", "CidrIp": {"Ref": "AllowSSHFrom"}}
         ]
       }
     },
