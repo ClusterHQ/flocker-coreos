@@ -1,5 +1,5 @@
-
-# Step 1: provision some CoreOS nodes
+# Flocker on CoreOS quickstart
+## Step 1: provision some CoreOS nodes
 
 * Go to [CloudFormation](https://console.aws.amazon.com/cloudformation/home#/stacks?filter=active)
 * Create a new stack
@@ -8,16 +8,16 @@
    * It also gives the nodes 50GB root disks, for storing Docker images
 * Follow the on-screen instructions, such as specifying discovery token and access key, and then wait for your nodes to appear in [EC2](https://console.aws.amazon.com/ec2/v2/home)
 
-# Step 2: create `cluster.yml` for Flocker nodes
+## Step 2: create `cluster.yml` for Flocker nodes
 
 * Install [Unofficial Flocker Tools](https://docs.clusterhq.com/en/latest/labs/installer.html)
 * Pick a node from EC2 to host the control service, label it as the master (see screenshot)
 
-* When you create a `cluster.yml`, copy and paste the IP addresses from the AWS control panel like this:
+* When you create a `cluster.yml`, you will need the following details from the AWS control panel:
 
 ![CoreOS nodes in EC2, highlighting external and internal IP and external DNS name](coreos-aws.png)
 
-The `cluster.yml` should look like this (see screenshot for where to get much of this information from):
+The `cluster.yml` should look like this, see screenshot for where to get much of this information from:
 ```
 cluster_name: <descriptive name>
 agent_nodes:
@@ -41,7 +41,7 @@ agent_config:
     access_key_id: <your AWS access key>
     secret_access_key: <your AWS secret key>
 ```
-# Step 3: configure root access to nodes
+## Step 3: configure root access to nodes
 
 * Run the following script from your workstation, replacing the list of nodes with the public IP addresses of the nodes:
 
@@ -53,12 +53,14 @@ for X in <node 1 public IP> <node 2 public IP> <node 3 public IP>; do
 done
 ```
 
-# Step 4: run flocker-config
+## Step 4: run flocker-config
 
-* This is a tool from unofficial flocker tools which will deploy the Flocker containers on your nodes:
+* This is a tool from Unofficial Flocker Tools which will deploy the Flocker containers on your nodes:
+
+You will need Unofficial Flocker Tools 0.3 or later for CoreOS support, use `pip show UnofficialFlockerTools` to check the version.
 
 ```
-flocker-config cluster-yml
+flocker-config cluster.yml
 ```
 
 * When it's finished, try this to check that all your nodes came up:
