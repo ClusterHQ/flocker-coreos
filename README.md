@@ -3,7 +3,7 @@
 
 * Go to [CloudFormation](https://console.aws.amazon.com/cloudformation/home#/stacks?filter=active)
 * Create a new stack
-* Download and upload [this template](https://raw.githubusercontent.com/ClusterHQ/flocker-coreos/master/coreos-stable-hvm.template) to CloudFormation
+* Download [this template](https://raw.githubusercontent.com/ClusterHQ/flocker-coreos/master/coreos-stable-hvm.template) to your computer and then upload it to CloudFormation
    * This is a modified version of the CoreOS CloudFormation template which puts all the nodes in the same AZ (necessary so that they can access the same storage)
    * It also gives the nodes 50GB root disks, for storing Docker images
 * Follow the on-screen instructions, such as specifying discovery token and access key, and then wait for your nodes to appear in [EC2](https://console.aws.amazon.com/ec2/v2/home)
@@ -45,7 +45,7 @@ agent_config:
 ```
 ## Step 3: configure root access to nodes
 
-* Run the following script from your workstation, replacing the list of nodes with the public IP addresses of the nodes:
+* Run the following script from your computer, replacing the list of nodes with the public IP addresses of the nodes:
 
 ```
 for X in <node 1 public IP> <node 2 public IP> <node 3 public IP>; do
