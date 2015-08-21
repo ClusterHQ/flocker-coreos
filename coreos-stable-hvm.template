@@ -99,7 +99,7 @@
         }
       }
     },
-    "Ingress4001": {
+    "Ingress4524": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupName": {"Ref": "CoreOSSecurityGroup"}, "IpProtocol": "tcp", "FromPort": "4524", "ToPort": "4524", "SourceSecurityGroupId": {
