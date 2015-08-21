@@ -71,7 +71,7 @@
       "Type": "String"
     },
     "AllowSSHFrom": {
-      "Description": "The net block (CIDR) that SSH is available to.",
+      "Description": "The net block (CIDR) that SSH and Flocker API access is available to.",
       "Default": "0.0.0.0/0",
       "Type": "String"
     },
@@ -86,7 +86,8 @@
       "Properties": {
         "GroupDescription": "CoreOS SecurityGroup",
         "SecurityGroupIngress": [
-          {"IpProtocol": "tcp", "FromPort": "22", "ToPort": "22", "CidrIp": {"Ref": "AllowSSHFrom"}}
+          {"IpProtocol": "tcp", "FromPort": "22", "ToPort": "22", "CidrIp": {"Ref": "AllowSSHFrom"}},
+          {"IpProtocol": "tcp", "FromPort": "4523", "ToPort": "4523", "CidrIp": {"Ref": "AllowSSHFrom"}},
         ]
       }
     },
@@ -94,6 +95,14 @@
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupName": {"Ref": "CoreOSSecurityGroup"}, "IpProtocol": "tcp", "FromPort": "4001", "ToPort": "4001", "SourceSecurityGroupId": {
+          "Fn::GetAtt" : [ "CoreOSSecurityGroup", "GroupId" ]
+        }
+      }
+    },
+    "Ingress4001": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupName": {"Ref": "CoreOSSecurityGroup"}, "IpProtocol": "tcp", "FromPort": "4524", "ToPort": "4524", "SourceSecurityGroupId": {
           "Fn::GetAtt" : [ "CoreOSSecurityGroup", "GroupId" ]
         }
       }
