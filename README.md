@@ -70,4 +70,5 @@ flocker-volumes list-nodes
 ```
 
 * Now you can start using Flocker on your CoreOS cluster!
-  See TODO for an introduction to Flocker.
+
+# TODO - demo integration with flocker docker plugin and fleet
