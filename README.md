@@ -11,6 +11,8 @@
 ## Step 2: create `cluster.yml` for Flocker nodes
 
 * Install [Unofficial Flocker Tools](https://docs.clusterhq.com/en/latest/labs/installer.html)
+    * You will need Unofficial Flocker Tools 0.3 or later for CoreOS support, use `pip show UnofficialFlockerTools` to check the version.
+
 * Pick a node from EC2 to host the control service, label it as the master (see screenshot)
 
 * When you create a `cluster.yml`, you will need the following details from the AWS control panel:
@@ -56,8 +58,6 @@ done
 ## Step 4: run flocker-config
 
 * This is a tool from Unofficial Flocker Tools which will deploy the Flocker containers on your nodes:
-
-You will need Unofficial Flocker Tools 0.3 or later for CoreOS support, use `pip show UnofficialFlockerTools` to check the version.
 
 ```
 flocker-config cluster.yml
