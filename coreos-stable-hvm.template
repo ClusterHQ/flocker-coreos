@@ -50,7 +50,7 @@
     "InstanceType" : {
       "Description" : "EC2 HVM instance type (m3.medium, etc).",
       "Type" : "String",
-      "Default" : "m4.large",
+      "Default" : "m3.large",
       "ConstraintDescription" : "Must be a valid EC2 HVM instance type."
     },
     "ClusterSize": {
