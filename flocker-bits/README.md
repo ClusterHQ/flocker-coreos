@@ -79,11 +79,13 @@ docker run -d --net=host --privileged \
     --name=flocker-container-agent \
     clusterhq/flocker-container-agent
 
-docker run --net=host --privileged \
+docker run --net=host --privileged -d \
     -e DEBUG=1 \
     -v /tmp/flocker-command-log:/tmp/flocker-command-log \
-    -v /flocker:/flocker -v /:/host -v $CERTS:/etc/flocker \
-    -v /dev:/dev -d \
+    -v /flocker:/flocker \
+    -v /:/host \
+    -v $CERTS:/etc/flocker \
+    -v /dev:/dev \
     --name=flocker-dataset-agent \
     clusterhq/flocker-dataset-agent
 ```
