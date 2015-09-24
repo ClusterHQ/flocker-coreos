@@ -6,17 +6,17 @@ import sys
 
 from flocker.node.script import AgentService, AgentServiceFactory, flocker_dataset_agent_main
 
-DATASET_IP = os.environ.get('FLOCKER_DATASET_IP')
+FLOCKER_AGENT_IP = os.environ.get('FLOCKER_AGENT_IP')
 
-if DATASET_IP is None:
-    sys.stderr.write("FLOCKER_DATASET_IP env variable required")
+if FLOCKER_AGENT_IP is None:
+    sys.stderr.write("FLOCKER_AGENT_IP env variable required")
     exit(1)
 
 def get_external_ip_from_env(self, host, port):
-    return unicode(DATASET_IP, "ascii")
+    return unicode(FLOCKER_AGENT_IP, "ascii")
 
-AgentService.get_external_ip = foo
-AgentServiceFactory.get_external_ip = foo
+AgentService.get_external_ip = get_external_ip_from_env
+AgentServiceFactory.get_external_ip = get_external_ip_from_env
 
 if __name__ == '__main__':
     sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
