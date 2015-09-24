@@ -6,6 +6,10 @@ import sys
 
 from flocker.node.script import AgentService, AgentServiceFactory, flocker_container_agent_main
 
+"""
+Grab the agent IP from the environment and monkey-patch the agent script
+to use that IP rather than auto-detect
+"""
 FLOCKER_AGENT_IP = os.environ.get('FLOCKER_AGENT_IP')
 
 if FLOCKER_AGENT_IP is None:
