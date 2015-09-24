@@ -10,12 +10,12 @@ from flocker.node.script import AgentService, AgentServiceFactory, flocker_conta
 Grab the agent IP from the environment and monkey-patch the agent script
 to use that IP rather than auto-detect
 """
-FLOCKER_AGENT_IP = os.environ.get('FLOCKER_AGENT_IP')
+FLOCKER_DATASET_IP = os.environ.get('FLOCKER_DATASET_IP')
 
 def get_external_ip_from_env(self, host, port):
-    return unicode(FLOCKER_AGENT_IP, "ascii")
+    return unicode(FLOCKER_DATASET_IP, "ascii")
 
-if FLOCKER_AGENT_IP is not None:
+if FLOCKER_DATASET_IP is not None:
     AgentService.get_external_ip = get_external_ip_from_env
     AgentServiceFactory.get_external_ip = get_external_ip_from_env
 
