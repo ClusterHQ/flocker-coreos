@@ -3,6 +3,7 @@
 # -*- coding: utf-8 -*-
 import re
 import sys
+import os
 
 from flocker.node.script import AgentService, AgentServiceFactory, flocker_dataset_agent_main
 
