@@ -1,5 +1,5 @@
 # dataset-agent Dockerfile
-FROM clusterhq/flocker-core:1.2.0-1
+FROM clusterhq/flocker-core:1.2.0-1rev1
 MAINTAINER Madhuri Yechuri <madhuri.yechuri@clusterhq.com>
 
 ADD wrap_dataset_agent_mtab.sh /opt/flocker/wrap_dataset_agent_mtab.sh
