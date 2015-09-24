@@ -39,6 +39,10 @@ RUN sudo bash -c "cd util-linux; \
 RUN sudo cp /util-linux/nsenter /bin
 
 ADD wrap_command.sh /tmp/wrap_command.sh
+ADD flocker-ca /usr/bin/flocker-ca
+RUN chmod a+x /usr/bin/flocker-ca
+ADD flocker-ca /opt/flocker/bin/flocker-ca
+RUN chmod a+x /opt/flocker/bin/flocker-ca
 
 RUN bash /tmp/wrap_command.sh /bin mount 4755
 RUN bash /tmp/wrap_command.sh /bin umount 4755
