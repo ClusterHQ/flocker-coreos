@@ -1,0 +1,11 @@
+#!/opt/flocker/bin/python
+
+# -*- coding: utf-8 -*-
+import re
+import sys
+
+from flocker.ca._script import flocker_ca_main
+
+if __name__ == '__main__':
+    sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
+    sys.exit(flocker_ca_main())
