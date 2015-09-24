@@ -11,7 +11,8 @@ RUN sudo add-apt-repository -y "deb https://clusterhq-archive.s3.amazonaws.com/u
 
 RUN sudo apt-get update && sudo apt-get -y --force-yes install \
       clusterhq-python-flocker=${FLOCKER_VERSION} \
-      clusterhq-flocker-node=${FLOCKER_VERSION}
+      clusterhq-flocker-node=${FLOCKER_VERSION} \
+      clusterhq-flocker-cli=${FLOCKER_VERSION}
 
 RUN sudo apt-get -y --force-yes install \
       git \
