@@ -2,9 +2,54 @@
 
 # -*- coding: utf-8 -*-
 import re
+import os
 import sys
 
-from flocker.ca._script import flocker_ca_main
+from flocker.ca._script import flocker_ca_main, NodeCertificateOptions
+from twisted.internet.defer import succeed
+from twisted.python.filepath import FilePath
+from twisted.python.usage import UsageError
+from flocker.ca._ca import (NodeCredential, RootCredential, PathError)
+
+"""
+Monkey-patched NodeCertificateOptions.run function that will use an Environment
+variable to supply the UUID of the node
+"""
+FLOCKER_AGENT_UUID = os.environ.get('FLOCKER_AGENT_UUID')
+
+def uuid_run(self):
+    """
+    Check if root key and certificate files (either default or as
+    specified on the command line) exist in the path and error out if
+    they do not. If there are no path errors, create a new node
+    certificate signed by the root and write it out to the current
+    directory.
+    """
+    if self["inputpath"] is None:
+        self["inputpath"] = os.getcwd()
+    if self["outputpath"] is None:
+        self["outputpath"] = os.getcwd()
+    self["inputpath"] = FilePath(self["inputpath"])
+    self["outputpath"] = FilePath(self["outputpath"])
+
+    try:
+        try:
+            ca = RootCredential.from_path(self["inputpath"])
+            nc = NodeCredential.initialize(self["outputpath"], ca, uuid=FLOCKER_AGENT_UUID)
+            self._sys_module.stdout.write(
+                u"Created {uuid}.crt. Copy it over to "
+                u"/etc/flocker/node.crt on your node "
+                u"machine and make sure to chmod 0600 it.\n".format(
+                    uuid=nc.uuid
+                ).encode("utf-8")
+            )
+        except PathError as e:
+            raise UsageError(str(e))
+    except UsageError as e:
+        raise SystemExit(u"Error: {error}".format(error=str(e)))
+    return succeed(None)
+
+NodeCertificateOptions.run = uuid_run
 
 if __name__ == '__main__':
     sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
