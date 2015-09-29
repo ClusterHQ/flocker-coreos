@@ -28,6 +28,11 @@ def get_client(reactor=reactor, certificates_path=FilePath("/etc/flocker"),
 
     :return: ``treq`` compatible object.
     """
+    # the user has already generated certs and is giving us the name of them
+    if os.environ['FLOCKER_API_CERT_NAME'] is not None:
+        user_certificate_filename = os.environ['FLOCKER_API_CERT_NAME'] + '.crt'
+        user_key_filename = os.environ['FLOCKER_API_CERT_NAME'] + '.key'
+
     user_crt = certificates_path.child(user_certificate_filename)
     user_key = certificates_path.child(user_key_filename)
     cluster_crt = certificates_path.child(cluster_certificate_filename)

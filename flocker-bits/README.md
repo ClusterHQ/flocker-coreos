@@ -92,6 +92,7 @@ docker run --net=host --privileged -d \
 docker run -ti --rm \
     --volumes-from certs \
     -e FLOCKER_CONTROL_SERVICE_ENDPOINT=172.16.79.250 \
+    -e FLOCKER_API_CERT_NAME=bob # -> /etc/flocker/bob.{crt,key}
     clusterhq/create-volume:1.2.0-1rev1 \
     --dataset-uuid 11111111-1111-1111-1111-111111111124 \
     --host-uuid 5c2aee8e-71c0-46cb-8338-02a59e935cbc \
