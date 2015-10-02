@@ -93,7 +93,7 @@ def create_volume(settings, client):
     def does_node_exists(nodes):
         have_seen_node = False
         for node in nodes:
-            if node['uuid'] == settings['host_uuid']:
+            if node['uuid'].replace('-','').lower() == settings['host_uuid'].replace('-','').lower():
                 have_seen_node = True
         return have_seen_node
 
