@@ -3,7 +3,7 @@ Some useful things
 """
 
 from utils import (url_factory, get_request_factory, post_request_factory,
-    get_volume_create_data, loop_until)
+    get_volume_create_data, loop_until, inject_dashes_to_uuid, compare_host_uuids)
 import treq
 import json
 from twisted.internet import reactor, defer
@@ -33,7 +33,7 @@ def create_volume(settings, client):
             if matching_dataset is None:
                 return None
 
-            if matching_dataset["primary"] == settings['host_uuid']:
+            if compare_host_uuids(matching_dataset["primary"], settings['host_uuid']):
                 return matching_dataset
             else:
                 return None
@@ -65,7 +65,7 @@ def create_volume(settings, client):
             d.addCallback(dataset_exists)
             return d
         move_data = {
-            "primary":settings['host_uuid']
+            "primary":inject_dashes_to_uuid(settings['host_uuid'])
         }
         d = post_request('/configuration/datasets/%s' % (settings['dataset_uuid']), move_data)
         d.addCallback(dataset_moved)
@@ -93,7 +93,7 @@ def create_volume(settings, client):
     def does_node_exists(nodes):
         have_seen_node = False
         for node in nodes:
-            if node['uuid'].replace('-','').lower() == settings['host_uuid'].replace('-','').lower():
+            if compare_host_uuids(node['uuid'], settings['host_uuid']):
                 have_seen_node = True
         return have_seen_node
 

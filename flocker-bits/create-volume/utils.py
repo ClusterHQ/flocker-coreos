@@ -33,11 +33,18 @@ def post_request_factory(client, url):
         return d
     return post_request
 
+def inject_dashes_to_uuid(uuid):
+    if uuid.find('-') == -1:
+        parts = [uuid[0:8], uuid[8:12], uuid[12:16], uuid[16:20], uuid[20:32]]
+        uuid = '-'.join(parts)
+    return uuid
+
+def compare_host_uuids(id1, id2):
+    return id1.replace('-','').lower() == id2.replace('-','').lower()
+
 def get_volume_create_data(host_uuid, dataset_uuid, size, metadata={}):
-    if host_uuid.find('-') == -1:
-        parts = [host_uuid[0:8], host_uuid[8:12], host_uuid[12:16], host_uuid[16:20], host_uuid[20:32]]
-        host_uuid = '-'.join(parts)
-        
+    host_uuid = inject_dashes_to_uuid(host_uuid)
+
     return {
         "primary": host_uuid,
         "dataset_id": dataset_uuid,
