@@ -34,6 +34,10 @@ def post_request_factory(client, url):
     return post_request
 
 def get_volume_create_data(host_uuid, dataset_uuid, size, metadata={}):
+    if host_uuid.find('-') == -1:
+        parts = [host_uuid[0:8], host_uuid[8:12], host_uuid[12:16], host_uuid[16:20], host_uuid[20:32]]
+        host_uuid = '-'.join(parts)
+        
     return {
         "primary": host_uuid,
         "dataset_id": dataset_uuid,
