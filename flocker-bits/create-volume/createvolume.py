@@ -33,6 +33,9 @@ def create_volume(settings, client):
             if matching_dataset is None:
                 return None
 
+            if not "primary" in matching_dataset:
+                return None
+
             if compare_host_uuids(matching_dataset["primary"], settings['host_uuid']):
                 return matching_dataset
             else:
