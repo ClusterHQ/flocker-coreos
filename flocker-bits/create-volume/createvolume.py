@@ -14,6 +14,9 @@ def get_nodes(client):
   d1.addCallback(treq.json_content)
 """
 
+# the uuid used for a node when the volume should float between nodes
+FAKE_NODE_UUID = "00000000-0000-0000-0000-000000000000"
+
 def create_volume(settings, client):
     url = url_factory(settings)
     get_request = get_request_factory(client, url)
@@ -61,6 +64,10 @@ def create_volume(settings, client):
         return d
 
     def move_dataset():
+        def dataset_unattached(data):
+            if 'errors' in data and data['errors'] is not None:
+                raise Exception(data['errors'])
+
         def dataset_moved(data):
             if 'errors' in data and data['errors'] is not None:
                 raise Exception(data['errors'])
@@ -71,7 +78,10 @@ def create_volume(settings, client):
             "primary":inject_dashes_to_uuid(settings['host_uuid'])
         }
         d = post_request('/configuration/datasets/%s' % (settings['dataset_uuid']), move_data)
-        d.addCallback(dataset_moved)
+        if settings['host_uuid'] == FAKE_NODE_UUID:
+            d.addCallback(dataset_unattached)
+        else:
+            d.addCallback(dataset_moved)
         return d
 
     def get_dataset_configuration():
@@ -94,6 +104,9 @@ def create_volume(settings, client):
         return d
 
     def does_node_exists(nodes):
+        if settings['host_uuid'].lower() == 'none':
+            settings['host_uuid'] = FAKE_NODE_UUID
+            return True
         have_seen_node = False
         for node in nodes:
             if compare_host_uuids(node['uuid'], settings['host_uuid']):
