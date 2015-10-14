@@ -8,6 +8,11 @@ from twisted.internet import reactor
 from twisted.internet.task import react
 
 MINIMUM_DATASET_SIZE = 67108864
+GIGABYTE=1024*1024*1024
+SIZE_UNITS = {
+    "gb":GIGABYTE,
+    "gigabyte":GIGABYTE
+}
 
 def get_constants():
     values = {
@@ -47,8 +52,13 @@ def get_arguments():
     parser.add_argument('--size',
                         dest='size',
                         type=int,
-                        required=True,
+                        required=False,
                         help='the size of the dataset in bytes')
+    parser.add_argument('--size-units',
+                        dest='size_units',
+                        type=str,
+                        required=False,
+                        help='the units of the size (bytes, gb)')
 
     args = parser.parse_args()
     return vars(args)
@@ -60,6 +70,13 @@ def get_settings():
     constants = get_constants()
     env = get_environment()
     args = get_arguments()
+    if "size_units" in args:
+ 	if args["size_units"] in SIZE_UNITS:
+            if "size" in args:
+                units = SIZE_UNITS[args["size_units"]]
+                args["size"] = args["size"] * units
+    print args["size"]
+    exit(1)
     settings = dict(env.items() + args.items() + constants.items())
     return settings
 
