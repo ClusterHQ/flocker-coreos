@@ -42,8 +42,13 @@ def get_arguments():
     parser.add_argument('--dataset-uuid',
                         dest='dataset_uuid',
                         type=str,
-                        required=True,
+                        required=False,
                         help='the UUID of the dataset')
+    parser.add_argument('--dataset-name',
+                        dest='dataset_name',
+                        type=str,
+                        required=False,
+                        help='the name of the dataset')
     parser.add_argument('--host-uuid',
                         dest='host_uuid',
                         type=str,
@@ -76,6 +81,9 @@ def get_settings():
             if "size" in args and args["size"] is not None:
                 units = SIZE_UNITS[size_units_value]
                 args["size"] = args["size"] * units
+    if "dataset_uuid" not in args or args["dataset_uuid"] is None:
+        if "dataset_name" not in args or args["dataset_name"] is None:
+            raise Exception("either dataset-uuid or dataset-name is required")
     settings = dict(env.items() + args.items() + constants.items())
     return settings
 
