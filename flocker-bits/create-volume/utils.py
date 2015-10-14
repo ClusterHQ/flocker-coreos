@@ -42,15 +42,22 @@ def inject_dashes_to_uuid(uuid):
 def compare_host_uuids(id1, id2):
     return id1.replace('-','').lower() == id2.replace('-','').lower()
 
-def get_volume_create_data(host_uuid, dataset_uuid, size, metadata={}):
+def get_volume_create_data(host_uuid, dataset_name, dataset_uuid, size, metadata={}):
+    if dataset_name is not None:
+        metadata['name'] = dataset_name
+
     host_uuid = inject_dashes_to_uuid(host_uuid)
 
-    return {
+    data = {
         "primary": host_uuid,
-        "dataset_id": dataset_uuid,
         "maximum_size": size,
         "metadata": metadata
     }
+
+    if dataset_uuid is not None:
+        data['dataset_id'] = dataset_uuid
+
+    return data
 
 def loop_until(predicate):
     """Call predicate every 0.1 seconds, until it returns something ``Truthy``.
