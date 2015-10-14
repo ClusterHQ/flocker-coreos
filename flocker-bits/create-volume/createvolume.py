@@ -50,12 +50,15 @@ def create_volume(settings, client):
         def dataset_created(data):
             if 'errors' in data and data['errors'] is not None:
                 raise Exception(data['errors'])
+            if 'dataset_name' in settings and settings['dataset_name'] is not None:
+                settings['dataset_uuid'] = data['dataset_id']
             d = loop_until(check_if_dataset_exists)
             d.addCallback(dataset_exists)
             return d
 
         volume_data = get_volume_create_data(
             settings['host_uuid'],
+            settings['dataset_name'],
             settings['dataset_uuid'],
             settings['size']
         )
@@ -93,8 +96,15 @@ def create_volume(settings, client):
         def process_dataset_configs(datasets):
             does_dataset_exist = False
             for dataset in datasets:
-                if dataset['dataset_id'] == settings['dataset_uuid']:
-                    does_dataset_exist = True
+                if settings['dataset_name'] is not None:
+                    if 'metadata' in dataset and dataset['metadata'] is not None:
+                        if 'name' in dataset['metadata'] and dataset['metadata']['name'] is not None:
+                            if dataset['metadata']['name'] == settings['dataset_name']:
+                                does_dataset_exist = True
+                                settings['dataset_uuid'] = str(dataset['dataset_id'])
+                else:
+                    if dataset['dataset_id'] == settings['dataset_uuid']:
+                        does_dataset_exist = True
             if does_dataset_exist:
                 return move_dataset()
             else:
