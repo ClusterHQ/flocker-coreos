@@ -70,10 +70,10 @@ def get_settings():
     constants = get_constants()
     env = get_environment()
     args = get_arguments()
-    if "size_units" in args:
+    if "size_units" in args and args["size_units"] is not None:
 	size_units_value = args["size_units"].lower()
  	if size_units_value in SIZE_UNITS:
-            if "size" in args:
+            if "size" in args and args["size"] is not None:
                 units = SIZE_UNITS[size_units_value]
                 args["size"] = args["size"] * units
     settings = dict(env.items() + args.items() + constants.items())
