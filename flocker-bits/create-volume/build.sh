@@ -8,8 +8,8 @@ sudo docker run -ti --rm \
     -e FLOCKER_API_CERT_NAME=plugin \
     -e FLOCKER_CONTROL_SERVICE_ENDPOINT=10.154.243.239 \
     clusterhq/create-volume:1.2.0-1rev1 \
-    --dataset-uuid 11111111-1111-1111-1111-111111111133 \
-    --size-units gb \
+    --dataset-uuid 11111111-1111-1111-1111-111111111134 \
+    --size-units GB \
     --size 2 \
     --host-uuid bcdeb7d5-5c0f-466e-ae14-7976cdc277a5
 
