@@ -84,6 +84,9 @@ def get_settings():
     if "dataset_uuid" not in args or args["dataset_uuid"] is None:
         if "dataset_name" not in args or args["dataset_name"] is None:
             raise Exception("either dataset-uuid or dataset-name is required")
+    # dataset_name takes priority over dataset_uuid
+    if "dataset_name" in args and args["dataset_name"] is not None:
+        args["dataset_uuid"] = None
     settings = dict(env.items() + args.items() + constants.items())
     return settings
 
