@@ -71,12 +71,11 @@ def get_settings():
     env = get_environment()
     args = get_arguments()
     if "size_units" in args:
- 	if args["size_units"] in SIZE_UNITS:
+	size_units_value = args["size_units"].lower()
+ 	if size_units_value in SIZE_UNITS:
             if "size" in args:
-                units = SIZE_UNITS[args["size_units"]]
+                units = SIZE_UNITS[size_units_value]
                 args["size"] = args["size"] * units
-    print args["size"]
-    exit(1)
     settings = dict(env.items() + args.items() + constants.items())
     return settings
 
