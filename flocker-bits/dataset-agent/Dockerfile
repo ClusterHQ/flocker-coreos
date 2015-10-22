@@ -14,6 +14,8 @@ RUN apt-get install -y sg3-utils wget python2.7 python-setuptools
 RUN wget https://github.com/emc-openstack/naviseccli/raw/master/navicli-linux-64-x86-en-us_7.33.2.0.51-1_all.deb
 RUN dpkg -i navicli-linux-64-x86-en-us_7.33.2.0.51-1_all.deb
 RUN git clone https://github.com/ClusterHQ/flocker-vnx-driver.git /flocker-vnx-driver
-RUN cd /flocker-vnx-driver && python setup.py install
+
+# this part requires an agent.yml and so should be run once the agent.yml has been auto-generated
+#RUN cd /flocker-vnx-driver && python setup.py install
 
 CMD ["/opt/flocker/wrap_dataset_agent_mtab.sh"]
