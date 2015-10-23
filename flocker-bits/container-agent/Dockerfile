@@ -1,5 +1,5 @@
 # container-agent Dockerfile
-FROM clusterhq/flocker-core:1.2.0-1
+FROM clusterhq/flocker-core:etcd-persistency-LABS-105
 MAINTAINER Madhuri Yechuri <madhuri.yechuri@clusterhq.com>
 
 CMD ["/usr/sbin/flocker-container-agent"]

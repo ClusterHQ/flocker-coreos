@@ -1,5 +1,5 @@
 # dataset-agent Dockerfile
-FROM clusterhq/flocker-core:1.2.0-1
+FROM clusterhq/flocker-core:etcd-persistency-LABS-105
 MAINTAINER Madhuri Yechuri <madhuri.yechuri@clusterhq.com>
 
 RUN sudo apt-get install -y python-pip build-essential libssl-dev libffi-dev python-dev
