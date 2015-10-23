@@ -2,18 +2,10 @@
 FROM ubuntu:14.04
 MAINTAINER Madhuri Yechuri <madhuri.yechuri@clusterhq.com>
 
-ENV FLOCKER_VERSION 1.2.0-1
+RUN apt-get update
+RUN apt-get -y install apt-transport-https software-properties-common
 
-RUN sudo apt-get update
-RUN sudo apt-get -y install apt-transport-https software-properties-common
-RUN sudo add-apt-repository -y ppa:james-page/docker
-RUN sudo add-apt-repository -y "deb https://clusterhq-archive.s3.amazonaws.com/ubuntu/$(lsb_release --release --short)/\$(ARCH) /"
-
-RUN sudo apt-get update && sudo apt-get -y --force-yes install \
-      clusterhq-python-flocker=${FLOCKER_VERSION} \
-      clusterhq-flocker-node=${FLOCKER_VERSION}
-
-RUN sudo apt-get -y --force-yes install \
+RUN apt-get -y --force-yes install \
       git \
       build-essential \
       libncurses5-dev \
@@ -30,12 +22,22 @@ RUN sudo apt-get -y --force-yes install \
       autopoint \
       libtool
 
-RUN sudo git clone git://git.kernel.org/pub/scm/utils/util-linux/util-linux.git util-linux
-RUN sudo bash -c "cd util-linux; \
+RUN apt-get -y install git python-pip && \
+    cd /tmp && \
+    git clone https://github.com/clusterhq/flocker && \
+    cd flocker && \
+    git checkout etcd-persistency-LABS-105 && \
+    pip install . && \
+    cd / && \
+    rm -rf /tmp/flocker
+
+RUN git clone git://git.kernel.org/pub/scm/utils/util-linux/util-linux.git util-linux
+
+RUN bash -c "cd util-linux; \
                   ./autogen.sh; \
                   ./configure --without-python --disable-all-programs --enable-nsenter; \
                   make"
-RUN sudo cp /util-linux/nsenter /bin
+RUN cp /util-linux/nsenter /bin
 
 ADD wrap_command.sh /tmp/wrap_command.sh
 
