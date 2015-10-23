@@ -1,47 +1,47 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "CoreOS on EC2: http://coreos.com/docs/running-coreos/cloud-providers/ec2/",
+  "Description": "CoreOS - Alpha Channel on EC2: http://coreos.com/docs/running-coreos/cloud-providers/ec2/",
   "Mappings" : {
       "RegionMap" : {
 
           "eu-central-1" : {
-              "AMI" : "ami-bececaa3"
+              "AMI" : "ami-4a484457"
           },
 
           "ap-northeast-1" : {
-              "AMI" : "ami-f2338ff2"
+              "AMI" : "ami-088ced08"
           },
 
           "us-gov-west-1" : {
-              "AMI" : "ami-c75033e4"
+              "AMI" : "ami-46543665"
           },
 
           "sa-east-1" : {
-              "AMI" : "ami-11e9600c"
+              "AMI" : "ami-05f76618"
           },
 
           "ap-southeast-2" : {
-              "AMI" : "ami-8f88c8b5"
+              "AMI" : "ami-8beaa1b1"
           },
 
           "ap-southeast-1" : {
-              "AMI" : "ami-b6d8d4e4"
+              "AMI" : "ami-7acede28"
           },
 
           "us-east-1" : {
-              "AMI" : "ami-3d73d356"
+              "AMI" : "ami-5182d534"
           },
 
           "us-west-2" : {
-              "AMI" : "ami-85ada4b5"
+              "AMI" : "ami-024baa31"
           },
 
           "us-west-1" : {
-              "AMI" : "ami-1db04f59"
+              "AMI" : "ami-8de828c9"
           },
 
           "eu-west-1" : {
-              "AMI" : "ami-0e104179"
+              "AMI" : "ami-e7281a90"
           }
 
       }
