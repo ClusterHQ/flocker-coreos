@@ -2,7 +2,7 @@
 FROM ubuntu:14.04
 MAINTAINER Madhuri Yechuri <madhuri.yechuri@clusterhq.com>
 
-ENV FLOCKER_VERSION 1.5.0-1
+ENV FLOCKER_VERSION 1.6.1-1
 
 RUN sudo apt-get update
 RUN sudo apt-get -y install apt-transport-https software-properties-common
@@ -12,7 +12,8 @@ RUN sudo add-apt-repository -y "deb https://clusterhq-archive.s3.amazonaws.com/u
 RUN sudo apt-get update && sudo apt-get -y --force-yes install \
       clusterhq-python-flocker=${FLOCKER_VERSION} \
       clusterhq-flocker-node=${FLOCKER_VERSION} \
-      clusterhq-flocker-cli=${FLOCKER_VERSION}
+      clusterhq-flocker-cli=${FLOCKER_VERSION} \
+      clusterhq-flocker-docker-plugin=${FLOCKER_VERSION}
 
 RUN sudo apt-get -y --force-yes install \
       git \

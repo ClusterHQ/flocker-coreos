@@ -1,5 +1,5 @@
 # control-service Dockerfile
-FROM clusterhq/flocker-core:1.5.0-1rev1
+FROM clusterhq/flocker-core:1.6.1-1rev1
 MAINTAINER Madhuri Yechuri <madhuri.yechuri@clusterhq.com>
 
 EXPOSE 4523-4524

@@ -1,5 +1,5 @@
 # container-agent Dockerfile
-FROM clusterhq/flocker-core:1.5.0-1rev1
+FROM clusterhq/flocker-core:1.6.1-1rev1
 MAINTAINER Madhuri Yechuri <madhuri.yechuri@clusterhq.com>
 
 ADD flocker-container-agent /usr/sbin/flocker-container-agent
