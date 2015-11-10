@@ -16,7 +16,5 @@ RUN dpkg -i navicli-linux-64-x86-en-us_7.33.2.0.51-1_all.deb
 ENV PATH /opt/Navisphere/bin:$PATH
 RUN git clone https://github.com/ClusterHQ/flocker-vnx-driver.git /flocker-vnx-driver
 
-# this part requires an agent.yml and so should be run once the agent.yml has been auto-generated
-#RUN cd /flocker-vnx-driver && python setup.py install
-
-CMD ["/opt/flocker/wrap_dataset_agent_mtab.sh"]
+RUN /opt/flocker/bin/pip install --editable /flocker-vnx-driver
+ENTRYPOINT ["/opt/flocker/wrap_dataset_agent_mtab.sh"]
