@@ -10,7 +10,7 @@ RUN chmod +x /usr/sbin/flocker-dataset-agent
 
 # this is for the VNX driver
 RUN mkdir -p /flocker-vnx-driver
-RUN apt-get install -y sg3-utils wget python2.7 python-setuptools
+RUN apt-get install -y sg3-utils scsitools wget python2.7 python-setuptools
 RUN wget https://github.com/emc-openstack/naviseccli/raw/master/navicli-linux-64-x86-en-us_7.33.2.0.51-1_all.deb
 RUN dpkg -i navicli-linux-64-x86-en-us_7.33.2.0.51-1_all.deb
 ENV PATH /opt/Navisphere/bin:$PATH
