@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # /etc/mtab is usually linked to /proc/mounts, but here we want to
 # "continuously" update it with the *host*'s mtab instead
