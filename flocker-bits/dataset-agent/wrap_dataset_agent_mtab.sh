@@ -27,5 +27,14 @@ fi
     done
 ) &
 
+# XXX naviseccli -secfilepath expects the current hostname to be the same as at
+# the time the credentials were cached. So we override the hostname inside the
+# container.
+# Can't use docker run --hostname=foo.bar because that option conflicts with
+# docker run --net=host.
+if test -e /etc/flocker/hostname; then
+    hostname -F /etc/flocker/hostname
+fi
+
 # now start the dataset agent
 exec /usr/sbin/flocker-dataset-agent $@
