@@ -25,6 +25,5 @@ docker run --rm \
        --volume /dev:/dev \
        --volume /home/core/navisecclisec:/keys \
        --volume /flocker:/flocker \
-       --volume $PWD/flocker-vnx-driver:/flocker-vnx-driver \
        --name=flocker-dataset-agent \
        clusterhq/flocker-dataset-agent:1.5.0-1rev1
