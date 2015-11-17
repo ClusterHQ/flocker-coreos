@@ -10,4 +10,3 @@ sudo docker run -ti --rm \
     clusterhq/create-volume:1.2.0-1rev1 \
     --dataset-uuid 11111111-1111-1111-1111-111111111132 \
     --host-uuid b8838d84-63f3-493c-a07a-60efbbff238e
-

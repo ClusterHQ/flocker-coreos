@@ -176,4 +176,3 @@ wget https://raw.githubusercontent.com/ClusterHQ/eliot/error-output-proto/error-
 docker logs flocker-dataset-agent | docker run \
     -i -v $PWD:/app python python /app/error-extract.py
 ```
-

@@ -12,4 +12,3 @@ sudo docker run -ti --rm \
     --size-units GB \
     --size 2 \
     --host-uuid bcdeb7d5-5c0f-466e-ae14-7976cdc277a5
-

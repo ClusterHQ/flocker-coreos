@@ -125,7 +125,7 @@ def create_volume(settings, client):
 
     def node_data_loaded(node_data):
         if not does_node_exists(node_data):
-            raise Exception("the host %s does not exist" % (settings['host_uuid']))            
+            raise Exception("the host %s does not exist" % (settings['host_uuid']))
         return check_move_or_create()
 
     def get_node_data():

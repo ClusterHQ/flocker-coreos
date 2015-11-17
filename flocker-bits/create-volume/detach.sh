@@ -10,4 +10,3 @@ sudo docker run -ti --rm \
     clusterhq/create-volume:1.2.0-1rev1 \
     --dataset-name apples \
     --host-uuid none
-
