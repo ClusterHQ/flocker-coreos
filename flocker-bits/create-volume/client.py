@@ -4,21 +4,17 @@ A collection of utilities for using the flocker REST API.
 
 from treq.client import HTTPClient
 
-from twisted.internet import reactor, ssl, defer
-from twisted.python.usage import UsageError
+from twisted.internet import reactor, ssl
 from twisted.python.filepath import FilePath
 from twisted.web.client import Agent
 
 import os
-import sys
-import yaml
-import treq
-import copy
 
 
 def get_client(reactor=reactor, certificates_path=FilePath("/etc/flocker"),
-        user_certificate_filename="user.crt", user_key_filename="user.key",
-        cluster_certificate_filename="cluster.crt"):
+               user_certificate_filename="user.crt",
+               user_key_filename="user.key",
+               cluster_certificate_filename="cluster.crt"):
     """
     Create a ``treq``-API object that implements the REST API TLS
     authentication.
@@ -54,6 +50,9 @@ def get_client(reactor=reactor, certificates_path=FilePath("/etc/flocker"),
 
         return HTTPClient(Agent(reactor, contextFactory=ContextFactory()))
     else:
-        raise Exception("Not enough information to construct TLS context: "
-                "user_crt: %s, cluster_crt: %s, user_key: %s" % (
-                    user_crt, cluster_crt, user_key))
+        raise Exception(
+            "Not enough information to construct TLS context: "
+            "user_crt: %s, cluster_crt: %s, user_key: %s" % (
+                user_crt, cluster_crt, user_key
+            )
+        )

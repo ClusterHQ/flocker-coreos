@@ -2,11 +2,12 @@
 Some useful things
 """
 
-from utils import (url_factory, get_request_factory, post_request_factory,
-    get_volume_create_data, loop_until, inject_dashes_to_uuid, compare_host_uuids)
-import treq
+from utils import (
+    url_factory, get_request_factory, post_request_factory,
+    get_volume_create_data, loop_until, inject_dashes_to_uuid,
+    compare_host_uuids,
+)
 import json
-from twisted.internet import reactor, defer
 
 """
 def get_nodes(client):
@@ -16,6 +17,7 @@ def get_nodes(client):
 
 # the uuid used for a node when the volume should float between nodes
 FAKE_NODE_UUID = "00000000-0000-0000-0000-000000000000"
+
 
 def create_volume(settings, client):
     url = url_factory(settings)
@@ -27,6 +29,7 @@ def create_volume(settings, client):
 
     def check_if_dataset_exists():
         d = get_request('/state/datasets')
+
         def check_dataset_exists(datasets):
             matching_dataset = None
             for dataset in datasets:
@@ -36,10 +39,13 @@ def create_volume(settings, client):
             if matching_dataset is None:
                 return None
 
-            if not "primary" in matching_dataset:
+            if "primary" not in matching_dataset:
                 return None
 
-            if compare_host_uuids(matching_dataset["primary"], settings['host_uuid']):
+            if compare_host_uuids(
+                    matching_dataset["primary"],
+                    settings['host_uuid'],
+            ):
                 return matching_dataset
             else:
                 return None
@@ -50,7 +56,7 @@ def create_volume(settings, client):
         def dataset_created(data):
             if 'errors' in data and data['errors'] is not None:
                 raise Exception(data['errors'])
-            if 'dataset_name' in settings and settings['dataset_name'] is not None:
+            if ('dataset_name' in settings and settings['dataset_name'] is not None):
                 settings['dataset_uuid'] = data['dataset_id']
             d = loop_until(check_if_dataset_exists)
             d.addCallback(dataset_exists)
@@ -78,9 +84,12 @@ def create_volume(settings, client):
             d.addCallback(dataset_exists)
             return d
         move_data = {
-            "primary":inject_dashes_to_uuid(settings['host_uuid'])
+            "primary": inject_dashes_to_uuid(settings['host_uuid'])
         }
-        d = post_request('/configuration/datasets/%s' % (settings['dataset_uuid']), move_data)
+        d = post_request(
+            '/configuration/datasets/%s' % (settings['dataset_uuid'],),
+            move_data
+        )
         if settings['host_uuid'] == FAKE_NODE_UUID:
             d.addCallback(dataset_unattached)
         else:
@@ -93,6 +102,7 @@ def create_volume(settings, client):
 
     def check_move_or_create():
         d = get_dataset_configuration()
+
         def process_dataset_configs(datasets):
             does_dataset_exist = False
             for dataset in datasets:
@@ -125,7 +135,9 @@ def create_volume(settings, client):
 
     def node_data_loaded(node_data):
         if not does_node_exists(node_data):
-            raise Exception("the host %s does not exist" % (settings['host_uuid']))
+            raise Exception(
+                "The host %s does not exist" % (settings['host_uuid'],)
+            )
         return check_move_or_create()
 
     def get_node_data():

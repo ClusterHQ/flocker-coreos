@@ -3,11 +3,11 @@ Some useful things
 """
 
 import treq
-import sys
 import json
 from twisted.internet import reactor
 from twisted.internet.defer import maybeDeferred
 from twisted.internet.task import deferLater
+
 
 def url_factory(settings):
     def construct_url(path):
@@ -18,6 +18,7 @@ def url_factory(settings):
         )
     return construct_url
 
+
 def get_request_factory(client, url):
     def get_request(path):
         d = client.get(url(path))
@@ -25,13 +26,18 @@ def get_request_factory(client, url):
         return d
     return get_request
 
+
 def post_request_factory(client, url):
     def post_request(path, data):
-        d = client.post(url(path), json.dumps(data),
-            headers={'Content-Type': ['application/json']})
+        d = client.post(
+            url(path),
+            json.dumps(data),
+            headers={'Content-Type': ['application/json']}
+        )
         d.addCallback(treq.json_content)
         return d
     return post_request
+
 
 def inject_dashes_to_uuid(uuid):
     if uuid.find('-') == -1:
@@ -39,10 +45,16 @@ def inject_dashes_to_uuid(uuid):
         uuid = '-'.join(parts)
     return uuid
 
-def compare_host_uuids(id1, id2):
-    return id1.replace('-','').lower() == id2.replace('-','').lower()
 
-def get_volume_create_data(host_uuid, dataset_name, dataset_uuid, size, metadata={}):
+def compare_host_uuids(id1, id2):
+    return (
+        id1.replace('-', '').lower()
+        == id2.replace('-', '').lower()
+    )
+
+
+def get_volume_create_data(host_uuid, dataset_name, dataset_uuid, size,
+                           metadata={}):
     if dataset_name is not None:
         metadata['name'] = dataset_name
 
@@ -58,6 +70,7 @@ def get_volume_create_data(host_uuid, dataset_name, dataset_uuid, size, metadata
         data['dataset_id'] = dataset_uuid
 
     return data
+
 
 def loop_until(predicate):
     """Call predicate every 0.1 seconds, until it returns something ``Truthy``.

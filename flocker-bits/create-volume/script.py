@@ -1,28 +1,27 @@
 import argparse
-import sys
-import treq
 import os
 from client import get_client
 from createvolume import create_volume
-from twisted.internet import reactor
 from twisted.internet.task import react
 
 MINIMUM_DATASET_SIZE = 67108864
-GIGABYTE=1024*1024*1024
+GIGABYTE = 1024*1024*1024
 SIZE_UNITS = {
-    "gb":GIGABYTE,
-    "gigabyte":GIGABYTE
+    "gb": GIGABYTE,
+    "gigabyte": GIGABYTE
 }
+
 
 def get_constants():
     values = {
-        'target_port':4523
+        'target_port': 4523
     }
     return values
 
+
 def get_environment():
     env_map = {
-        'target_hostname':'FLOCKER_CONTROL_SERVICE_ENDPOINT'
+        'target_hostname': 'FLOCKER_CONTROL_SERVICE_ENDPOINT'
     }
     values = {}
 
@@ -34,10 +33,14 @@ def get_environment():
 
     return values
 
-def get_arguments():
 
-    parser = argparse.ArgumentParser(description="Create a Flocker dataset "
-        + "and wait until it shows up in /v1/state/datasets")
+def get_arguments():
+    parser = argparse.ArgumentParser(
+        description=(
+            "Create a Flocker dataset "
+            "and wait until it shows up in /v1/state/datasets"
+        )
+    )
 
     parser.add_argument('--dataset-uuid',
                         dest='dataset_uuid',
@@ -68,10 +71,12 @@ def get_arguments():
     args = parser.parse_args()
     return vars(args)
 
-"""
-combine the environment settings with the command line arguments into one dict
-"""
+
 def get_settings():
+    """
+    Combine the environment settings with the command line arguments into one
+    dict.
+    """
     constants = get_constants()
     env = get_environment()
     args = get_arguments()
@@ -89,6 +94,7 @@ def get_settings():
         args["dataset_uuid"] = None
     settings = dict(env.items() + args.items() + constants.items())
     return settings
+
 
 def main(reactor):
     settings = get_settings()
