@@ -2,7 +2,8 @@
 FROM ubuntu:14.04
 MAINTAINER Madhuri Yechuri <madhuri.yechuri@clusterhq.com>
 
-ENV FLOCKER_VERSION 1.2.0-1
+# Note: apt-get install requires the `-1` (epoch) suffix.
+ENV FLOCKER_VERSION 1.7.2-1
 
 RUN sudo apt-get update
 RUN sudo apt-get -y install apt-transport-https software-properties-common
