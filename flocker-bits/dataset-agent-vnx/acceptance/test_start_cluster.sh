@@ -21,6 +21,7 @@ docker run -d \
        --privileged \
        --net=host \
        --volume $PWD/etc_flocker:/etc/flocker \
+       --volume /:/host \
        --volume /dev:/dev \
        --volume /flocker:/flocker \
        --name=flocker-dataset-agent \
