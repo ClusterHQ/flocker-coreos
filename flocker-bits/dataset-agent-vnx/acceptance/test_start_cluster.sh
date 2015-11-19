@@ -1,14 +1,14 @@
 #!/bin/bash
 
 # Start control service
-docker run --rm \
+docker run -d \
        --net=host \
        --volume $PWD/etc_flocker:/etc/flocker \
        --name=flocker-control \
        clusterhq/flocker-control-service:1.7.2
 
 # Start container agent
-docker run --rm \
+docker run -d \
        --net=host \
        --privileged \
        --volume $PWD/etc_flocker:/etc/flocker \
@@ -17,7 +17,7 @@ docker run --rm \
        clusterhq/flocker-container-agent:1.7.2
 
 # Start dataset agent
-docker run --rm \
+docker run -d \
        --privileged \
        --net=host \
        --volume $PWD/etc_flocker:/etc/flocker \
