@@ -83,4 +83,22 @@ sudo chown -R "${USER}:${USER}" "${NODE1_ADDRESS}" "${NODE2_ADDRESS}"
 rsync --delete -av "${NODE1_ADDRESS}/" "core@${NODE1_ADDRESS}":etc_flocker
 rsync --delete -av "${NODE2_ADDRESS}/" "core@${NODE2_ADDRESS}":etc_flocker
 
+# Generate naviseccli keys
+read -p "Enter naviseccli username: " NAVISECCLI_USERNAME
+read -p "Enter naviseccli password: " NAVISECCLI_PASSWORD
+
+function create_keys() {
+    host_address="${1}"
+    SSH="ssh core@${host_address}"
+    $SSH mkdir '/home/core/etc_flocker/keys'
+    $SSH docker run --rm \
+           --net host \
+           --volume '/home/core/etc_flocker/keys:/keys' \
+           clusterhq/naviseccli \
+           -addusersecurity -scope 0 -user "${NAVISECCLI_USERNAME}" -password "${NAVISECCLI_PASSWORD}"
+}
+
+create_keys "${NODE1_ADDRESS}"
+create_keys "${NODE2_ADDRESS}"
+
 echo $WORKING_DIR
