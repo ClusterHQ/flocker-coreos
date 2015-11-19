@@ -25,4 +25,4 @@ docker run -d \
        --volume /dev:/dev \
        --volume /flocker:/flocker \
        --name=flocker-dataset-agent \
-       clusterhq/flocker-dataset-agent:1.7.2
+       clusterhq/flocker-dataset-agent-vnx:1.7.2
