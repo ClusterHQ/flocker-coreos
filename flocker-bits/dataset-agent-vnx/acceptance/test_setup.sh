@@ -58,7 +58,7 @@ dataset:
   backend: "flocker_emc_vnx_driver"
   spa_ip: "192.168.40.13"
   storage_pool: "Docker_Block_Pool"
-  naviseccli_keys: "/keys"
+  naviseccli_keys: "/etc/flocker/keys"
   hostname: "${NODE1_VNX_NAME}"
   storage_group: "${NODE1_VNX_STORAGE_GROUP}"
 EOF
@@ -71,7 +71,7 @@ dataset:
   backend: "flocker_emc_vnx_driver"
   spa_ip: "192.168.40.13"
   storage_pool: "Docker_Block_Pool"
-  naviseccli_keys: "/keys"
+  naviseccli_keys: "/etc/flocker/keys"
   hostname: "${NODE2_VNX_NAME}"
   storage_group: "${NODE2_VNX_STORAGE_GROUP}"
 EOF

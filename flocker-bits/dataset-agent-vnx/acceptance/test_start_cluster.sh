@@ -22,7 +22,6 @@ docker run --rm \
        --net=host \
        --volume $PWD/etc_flocker:/etc/flocker \
        --volume /dev:/dev \
-       --volume /home/core/navisecclisec:/keys \
        --volume /flocker:/flocker \
        --name=flocker-dataset-agent \
        clusterhq/flocker-dataset-agent:1.7.2
