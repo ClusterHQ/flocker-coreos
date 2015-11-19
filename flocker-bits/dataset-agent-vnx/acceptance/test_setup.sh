@@ -58,7 +58,7 @@ dataset:
   backend: "flocker_emc_vnx_driver"
   spa_ip: "192.168.40.13"
   storage_pool: "Docker_Block_Pool"
-  naviseccli_keys: "/keys"
+  naviseccli_keys: "/etc/flocker/keys"
   hostname: "${NODE1_VNX_NAME}"
   storage_group: "${NODE1_VNX_STORAGE_GROUP}"
 EOF
@@ -71,7 +71,7 @@ dataset:
   backend: "flocker_emc_vnx_driver"
   spa_ip: "192.168.40.13"
   storage_pool: "Docker_Block_Pool"
-  naviseccli_keys: "/keys"
+  naviseccli_keys: "/etc/flocker/keys"
   hostname: "${NODE2_VNX_NAME}"
   storage_group: "${NODE2_VNX_STORAGE_GROUP}"
 EOF
@@ -82,5 +82,23 @@ sudo chown -R "${USER}:${USER}" "${NODE1_ADDRESS}" "${NODE2_ADDRESS}"
 # Upload config
 rsync --delete -av "${NODE1_ADDRESS}/" "core@${NODE1_ADDRESS}":etc_flocker
 rsync --delete -av "${NODE2_ADDRESS}/" "core@${NODE2_ADDRESS}":etc_flocker
+
+# Generate naviseccli keys
+read -p "Enter naviseccli username: " NAVISECCLI_USERNAME
+read -p "Enter naviseccli password: " NAVISECCLI_PASSWORD
+
+function create_keys() {
+    host_address="${1}"
+    SSH="ssh core@${host_address}"
+    $SSH mkdir '/home/core/etc_flocker/keys'
+    $SSH docker run --rm \
+           --net host \
+           --volume '/home/core/etc_flocker/keys:/keys' \
+           clusterhq/naviseccli \
+           -addusersecurity -scope 0 -user "${NAVISECCLI_USERNAME}" -password "${NAVISECCLI_PASSWORD}"
+}
+
+create_keys "${NODE1_ADDRESS}"
+create_keys "${NODE2_ADDRESS}"
 
 echo $WORKING_DIR
