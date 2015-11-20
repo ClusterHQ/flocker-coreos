@@ -1,17 +1,80 @@
-# OS generated files #
-######################
+# Floobits
+.floo
+.flooignore
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# Editor artifacts
+*~
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+env/
+bin/
+build/
+develop-eggs/
+dist/
+eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+twisted/plugins/dropin.cache
+MANIFEST
+flocker.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+_trial_temp*
+.hypothesis
+
+# Translations
+*.mo
+
+# Mr Developer
+.mr.developer.cfg
+.project
+.pydevproject
+
+# Rope
+.ropeproject
+
+# Django stuff:
+*.log
+*.pot
+
+# Sphinx documentation
+docs/_build/
+
+# Vagrant
+.vagrant
+vagrant/tutorial/*.box
+vagrant/dev/*.box
+
+# Mac stuff
 .DS_Store
 .DS_Store?
 ._*
 .Spotlight-V100
 .Trashes
-Icon?
 ehthumbs.db
 Thumbs.db
-
-# Vagrant #
-###########
-.vagrant
-*.box
-tempcerts
-secrets.txt
+jobs.groovy
