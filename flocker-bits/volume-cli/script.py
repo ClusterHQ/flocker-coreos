@@ -1,7 +1,7 @@
 import argparse
 import os
 from client import get_client
-from volume_cli import move_or_create, delete
+from volume_cli import move_or_create, detach, delete
 from twisted.internet.task import react
 
 MINIMUM_DATASET_SIZE = 67108864
@@ -106,6 +106,30 @@ def get_arguments():
         help='the name of the dataset'
     )
 
+
+    parser_detach = subparsers.add_parser(
+        'detach',
+        description=(
+            "Detach a Flocker dataset "
+            "and wait until it detaches."
+        )
+    )
+
+    parser_detach.add_argument(
+        '--dataset-uuid',
+        dest='dataset_uuid',
+        type=str,
+        required=False,
+        help='the UUID of the dataset'
+    )
+    parser_detach.add_argument(
+        '--dataset-name',
+        dest='dataset_name',
+        type=str,
+        required=False,
+        help='the name of the dataset'
+    )
+
     args = parser.parse_args()
     return vars(args)
 
@@ -136,6 +160,7 @@ def get_settings():
 
 SUBCOMMANDS = {
     'move_or_create': move_or_create,
+    'detach': detach,
     'delete': delete,
 }
 

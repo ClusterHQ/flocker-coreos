@@ -1,8 +1,6 @@
 """
 Some useful things
 """
-from twisted.internet.defer import succeed
-
 from utils import (
     url_factory, get_request_factory, post_request_factory,
     get_volume_create_data, loop_until, inject_dashes_to_uuid,
@@ -14,10 +12,6 @@ FAKE_NODE_UUID = "5749b519-4c60-4ee2-99b2-5ff437e91761"
 
 
 def node_exists(settings, client):
-    if settings['host_uuid'].lower() == 'none':
-        settings['host_uuid'] = FAKE_NODE_UUID
-        return succeed(True)
-
     url = url_factory(settings)
     get_request = get_request_factory(client, url)
     d = get_request('/state/nodes')
@@ -77,6 +71,20 @@ def dataset_not_exists(settings, client):
     return d
 
 
+def dataset_detached(settings, client, dataset_id):
+    url = url_factory(settings)
+    get_request = get_request_factory(client, url)
+    d = get_request('/state/datasets')
+    d.addCallback(
+        lambda datasets: list(
+            dataset for dataset in datasets
+            if dataset['dataset_id'] == dataset_id
+            and 'primary' not in dataset
+        )
+    )
+    return d
+
+
 def create_dataset(settings, client):
     volume_data = get_volume_create_data(
         settings['host_uuid'],
@@ -100,15 +108,6 @@ def create_dataset(settings, client):
 
 
 def move_dataset(settings, client):
-    def dataset_unattached(data):
-        if 'errors' in data and data['errors'] is not None:
-            raise Exception(data['errors'])
-
-    def dataset_moved(data):
-        if 'errors' in data and data['errors'] is not None:
-            raise Exception(data['errors'])
-        d = loop_until(lambda: dataset_exists(settings, client))
-        return d
     move_data = {
         "primary": inject_dashes_to_uuid(settings['host_uuid'])
     }
@@ -120,14 +119,17 @@ def move_dataset(settings, client):
         ),
         move_data
     )
-    if settings['host_uuid'] == FAKE_NODE_UUID:
-        d.addCallback(dataset_unattached)
-    else:
-        d.addCallback(dataset_moved)
+
+    def dataset_moved(data):
+        if 'errors' in data and data['errors'] is not None:
+            raise Exception(data['errors'])
+        d = loop_until(lambda: dataset_exists(settings, client))
+        return d
+    d.addCallback(dataset_moved)
     return d
 
 
-def dataset_by_name_or_id(datasets, settings):
+def _dataset_by_name_or_id(datasets, settings):
     for dataset in datasets:
         if settings['dataset_name'] is not None:
             if 'metadata' in dataset and dataset['metadata'] is not None:
@@ -140,13 +142,16 @@ def dataset_by_name_or_id(datasets, settings):
                 return dataset
 
 
-def _move_or_create(settings, client):
+def dataset_by_name_or_id(settings, client):
     url = url_factory(settings)
     get_request = get_request_factory(client, url)
-
     d = get_request('/configuration/datasets')
+    d.addCallback(_dataset_by_name_or_id, settings)
+    return d
 
-    d.addCallback(dataset_by_name_or_id, settings)
+
+def _move_or_create(settings, client):
+    d = dataset_by_name_or_id(settings, client)
 
     def decide(dataset):
         if dataset:
@@ -166,13 +171,39 @@ def move_or_create(settings, client):
     return d
 
 
+def detach(settings, client):
+    d = dataset_by_name_or_id(settings, client)
+
+    def _detach(dataset):
+        move_data = {
+            "primary": FAKE_NODE_UUID
+        }
+        url = url_factory(settings)
+        post_request = post_request_factory(client, url)
+        return post_request(
+            b'/configuration/datasets/%s' % (
+                dataset['dataset_id'].encode('ascii'),
+            ),
+            move_data
+        )
+    d.addCallback(_detach)
+
+    def wait_for_detach(data):
+        if 'errors' in data and data['errors'] is not None:
+            raise Exception(data['errors'])
+        d = loop_until(
+            lambda: dataset_detached(settings, client, data['dataset_id'])
+        )
+        return d
+    d.addCallback(wait_for_detach)
+    return d
+
+
 def delete(settings, client):
-    url = url_factory(settings)
-    get_request = get_request_factory(client, url)
-    d = get_request('/configuration/datasets')
-    d.addCallback(dataset_by_name_or_id, settings)
+    d = dataset_by_name_or_id(settings, client)
 
     def _delete(dataset):
+        url = url_factory(settings)
         if dataset:
             settings['dataset_uuid'] = dataset['dataset_id']
             return client.delete(
