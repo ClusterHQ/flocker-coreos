@@ -18,5 +18,4 @@ if [[ -z "$FLOCKER_API_CERT_NAME" ]]; then
     mv /tmp/flocker/$FLOCKER_API_CERT_NAME.key /etc/flocker/$FLOCKER_API_CERT_NAME.key
 fi
 
-echo "Running volume create script"
 exec /opt/flocker/bin/python /opt/flocker/script.py $@

@@ -1,7 +1,7 @@
 import argparse
 import os
 from client import get_client
-from volume_cli import create_volume
+from volume_cli import move_or_create
 from twisted.internet.task import react
 
 MINIMUM_DATASET_SIZE = 67108864
@@ -40,9 +40,9 @@ def get_arguments():
     subparsers = parser.add_subparsers(dest='subparser_name')
 
     parser_create = subparsers.add_parser(
-        'create',
+        'move_or_create',
         description=(
-            "Create a Flocker dataset "
+            "Move or create a Flocker dataset "
             "and wait until it shows up in /v1/state/datasets"
         )
     )
@@ -112,7 +112,7 @@ def get_settings():
 
 
 SUBCOMMANDS = {
-    'create': create_volume,
+    'move_or_create': move_or_create,
     'delete': None
 }
 
