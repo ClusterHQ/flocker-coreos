@@ -1,7 +1,7 @@
 import argparse
 import os
 from client import get_client
-from volume_cli import move_or_create
+from volume_cli import move_or_create, delete
 from twisted.internet.task import react
 
 MINIMUM_DATASET_SIZE = 67108864
@@ -83,6 +83,29 @@ def get_arguments():
         help='the units of the size (bytes, gb)'
     )
 
+    parser_delete = subparsers.add_parser(
+        'delete',
+        description=(
+            "Delete a Flocker dataset "
+            "and wait until it dissappears from /v1/state/datasets"
+        )
+    )
+
+    parser_delete.add_argument(
+        '--dataset-uuid',
+        dest='dataset_uuid',
+        type=str,
+        required=False,
+        help='the UUID of the dataset'
+    )
+    parser_delete.add_argument(
+        '--dataset-name',
+        dest='dataset_name',
+        type=str,
+        required=False,
+        help='the name of the dataset'
+    )
+
     args = parser.parse_args()
     return vars(args)
 
@@ -113,7 +136,7 @@ def get_settings():
 
 SUBCOMMANDS = {
     'move_or_create': move_or_create,
-    'delete': None
+    'delete': delete,
 }
 
 

@@ -64,6 +64,19 @@ def dataset_exists(settings, client):
     return d
 
 
+def dataset_not_exists(settings, client):
+    url = url_factory(settings)
+    get_request = get_request_factory(client, url)
+    d = get_request('/state/datasets')
+    d.addCallback(
+        lambda datasets: len(list(
+            dataset for dataset in datasets
+            if dataset['dataset_id'] == settings['dataset_uuid']
+        )) == 0
+    )
+    return d
+
+
 def create_dataset(settings, client):
     volume_data = get_volume_create_data(
         settings['host_uuid'],
@@ -149,5 +162,30 @@ def move_or_create(settings, client):
     d = node_exists(settings, client)
     d.addCallback(
         lambda ignored: _move_or_create(settings, client)
+    )
+    return d
+
+
+def delete(settings, client):
+    url = url_factory(settings)
+    get_request = get_request_factory(client, url)
+    d = get_request('/configuration/datasets')
+    d.addCallback(dataset_by_name_or_id, settings)
+
+    def _delete(dataset):
+        if dataset:
+            settings['dataset_uuid'] = dataset['dataset_id']
+            return client.delete(
+                url(b'/configuration/datasets/%s' % (
+                    dataset['dataset_id'].encode('ascii'),
+                ))
+            )
+        else:
+            raise Exception('Unknown dataset', settings)
+    d.addCallback(_delete)
+    d.addCallback(
+        lambda ignored: loop_until(
+            lambda: dataset_not_exists(settings, client)
+        )
     )
     return d
