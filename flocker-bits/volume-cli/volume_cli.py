@@ -10,7 +10,7 @@ from utils import (
 )
 
 # the uuid used for a node when the volume should float between nodes
-FAKE_NODE_UUID = "00000000-0000-0000-0000-000000000000"
+FAKE_NODE_UUID = "5749b519-4c60-4ee2-99b2-5ff437e91761"
 
 
 def node_exists(settings, client):
