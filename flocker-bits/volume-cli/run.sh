@@ -10,7 +10,7 @@ if [[ -z "$FLOCKER_API_CERT_NAME" ]]; then
 
     echo "Generating api certificate for create volume script"
     mkdir /tmp/flocker
-    flocker-ca create-api-certificate --inputpath=/etc/flocker --outputpath=/tmp/flocker $FLOCKER_API_CERT_NAME
+    /opt/flocker/bin/flocker-ca create-api-certificate --inputpath=/etc/flocker --outputpath=/tmp/flocker $FLOCKER_API_CERT_NAME
 
     echo "Fixing file permissions and filenames for certificate"
     chmod 0600 /tmp/flocker/*

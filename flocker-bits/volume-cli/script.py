@@ -1,7 +1,7 @@
 import argparse
 import os
 from client import get_client
-from createvolume import create_volume
+from volume_cli import create_volume
 from twisted.internet.task import react
 
 MINIMUM_DATASET_SIZE = 67108864
