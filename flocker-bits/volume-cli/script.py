@@ -35,38 +35,53 @@ def get_environment():
 
 
 def get_arguments():
-    parser = argparse.ArgumentParser(
+
+    parser = argparse.ArgumentParser()
+    subparsers = parser.add_subparsers(dest='subparser_name')
+
+    parser_create = subparsers.add_parser(
+        'create',
         description=(
             "Create a Flocker dataset "
             "and wait until it shows up in /v1/state/datasets"
         )
     )
 
-    parser.add_argument('--dataset-uuid',
-                        dest='dataset_uuid',
-                        type=str,
-                        required=False,
-                        help='the UUID of the dataset')
-    parser.add_argument('--dataset-name',
-                        dest='dataset_name',
-                        type=str,
-                        required=False,
-                        help='the name of the dataset')
-    parser.add_argument('--host-uuid',
-                        dest='host_uuid',
-                        type=str,
-                        required=True,
-                        help='the UUID of the host for the dataset')
-    parser.add_argument('--size',
-                        dest='size',
-                        type=int,
-                        required=False,
-                        help='the size of the dataset in bytes')
-    parser.add_argument('--size-units',
-                        dest='size_units',
-                        type=str,
-                        required=False,
-                        help='the units of the size (bytes, gb)')
+    parser_create.add_argument(
+        '--dataset-uuid',
+        dest='dataset_uuid',
+        type=str,
+        required=False,
+        help='the UUID of the dataset'
+    )
+    parser_create.add_argument(
+        '--dataset-name',
+        dest='dataset_name',
+        type=str,
+        required=False,
+        help='the name of the dataset'
+    )
+    parser_create.add_argument(
+        '--host-uuid',
+        dest='host_uuid',
+        type=str,
+        required=True,
+        help='the UUID of the host for the dataset'
+    )
+    parser_create.add_argument(
+        '--size',
+        dest='size',
+        type=int,
+        required=False,
+        help='the size of the dataset in bytes'
+    )
+    parser_create.add_argument(
+        '--size-units',
+        dest='size_units',
+        type=str,
+        required=False,
+        help='the units of the size (bytes, gb)'
+    )
 
     args = parser.parse_args()
     return vars(args)
@@ -96,10 +111,16 @@ def get_settings():
     return settings
 
 
+SUBCOMMANDS = {
+    'create': create_volume,
+    'delete': None
+}
+
+
 def main(reactor):
     settings = get_settings()
     client = get_client()
-    return create_volume(settings, client)
+    return SUBCOMMANDS[settings['subparser_name']](settings, client)
 
 if __name__ == "__main__":
     react(main)
