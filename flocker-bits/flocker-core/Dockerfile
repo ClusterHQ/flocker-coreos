@@ -1,4 +1,5 @@
-# container-agent Dockerfile
+# Copyright ClusterHQ Inc.  See LICENSE file for details.
+
 FROM ubuntu:14.04
 MAINTAINER Madhuri Yechuri <madhuri.yechuri@clusterhq.com>
 
@@ -46,3 +47,9 @@ RUN bash /tmp/wrap_command.sh /bin lsblk 755
 RUN bash /tmp/wrap_command.sh /sbin losetup 755
 RUN bash /tmp/wrap_command.sh /sbin mkfs 755
 RUN bash /tmp/wrap_command.sh /sbin blkid 755
+
+# A patched version of flocker-ca which allows the Node UUID to be supplied as
+# an environment variable.
+# XXX: Implement this in Flocker (FLOC-190)
+ADD flocker-ca /opt/flocker/bin/flocker-ca
+RUN chmod a+x /opt/flocker/bin/flocker-ca
