@@ -1,4 +1,5 @@
-# container-agent Dockerfile
+# Copyright ClusterHQ Inc.  See LICENSE file for details.
+
 FROM ubuntu:14.04
 MAINTAINER Madhuri Yechuri <madhuri.yechuri@clusterhq.com>
 

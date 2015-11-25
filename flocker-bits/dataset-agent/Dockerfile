@@ -1,4 +1,5 @@
-# dataset-agent Dockerfile
+# Copyright ClusterHQ Inc.  See LICENSE file for details.
+
 FROM clusterhq/flocker-core:1.7.2
 MAINTAINER Madhuri Yechuri <madhuri.yechuri@clusterhq.com>
 
