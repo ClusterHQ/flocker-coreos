@@ -1,7 +1,7 @@
 # Copyright ClusterHQ Inc.  See LICENSE file for details.
 # A Flocker dataset agent image containing the EMC VNX driver and all the
 # command line utilities required by that driver.
-FROM clusterhq/flocker-dataset-agent:1.7.2
+FROM clusterhq/flocker-dataset-agent:1.8.0
 MAINTAINER ClusterHQ <contact@clusterhq.com>
 
 RUN apt-get install -y sg3-utils scsitools wget

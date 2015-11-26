@@ -26,7 +26,7 @@ docker run --rm \
        --env FLOCKER_API_CERT_NAME=user \
        --env FLOCKER_CONTROL_SERVICE_ENDPOINT=172.20.20.102 \
        --volume $PWD:/etc/flocker \
-       clusterhq/volume-cli:1.7.2 \
+       clusterhq/volume-cli:1.8.0 \
        move_or_create \
            --host-uuid=5f8bc90c-37c7-4810-8461-90c88ec84dd4 \
            --dataset-name=richardw7 \
