@@ -5,7 +5,7 @@ docker run -d \
        --net=host \
        --volume $PWD/etc_flocker:/etc/flocker \
        --name=flocker-control \
-       clusterhq/flocker-control-service:1.8.0
+       clusterhq/flocker-control-service:1.10.1
 
 # Start container agent
 docker run -d \
@@ -14,7 +14,7 @@ docker run -d \
        --volume $PWD/etc_flocker:/etc/flocker \
        --volume /var/run/docker.sock:/var/run/docker.sock \
        --name=flocker-container-agent  \
-       clusterhq/flocker-container-agent:1.8.0
+       clusterhq/flocker-container-agent:1.10.1
 
 # Start dataset agent
 docker run -d \
@@ -25,4 +25,4 @@ docker run -d \
        --volume /dev:/dev \
        --volume /flocker:/flocker \
        --name=flocker-dataset-agent \
-       clusterhq/flocker-dataset-agent-vnx:1.8.0
+       clusterhq/flocker-dataset-agent-vnx:1.10.1
