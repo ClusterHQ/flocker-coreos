@@ -1,5 +1,5 @@
 # dataset-agent Dockerfile
-FROM clusterhq/flocker-core:1.8.0
+FROM clusterhq/flocker-core:1.10.2
 MAINTAINER ClusterHQ <contact@clusterhq.com>
 
 ADD client.py /opt/flocker/client.py
