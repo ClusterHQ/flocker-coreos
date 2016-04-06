@@ -2,7 +2,7 @@
 FROM ubuntu:14.04
 MAINTAINER Madhuri Yechuri <madhuri.yechuri@clusterhq.com>
 
-env CONTROL_HOSTNAME=ec2-52-27-159-173.us-west-2.compute.amazonaws.com
+env CONTROL_HOSTNAME=localhost
 
 RUN sudo apt-get update
 RUN sudo apt-get -y install apt-transport-https software-properties-common
