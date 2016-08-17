@@ -1,6 +1,6 @@
 # Copyright ClusterHQ Inc.  See LICENSE file for details.
 
-FROM clusterhq/flocker-core:1.11.0
+FROM clusterhq/flocker-core:1.14.0
 MAINTAINER Madhuri Yechuri <madhuri.yechuri@clusterhq.com>
 
 ADD wrap_dataset_agent_mtab.sh /tmp/wrap_dataset_agent_mtab.sh
